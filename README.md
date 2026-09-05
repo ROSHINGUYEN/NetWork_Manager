@@ -29,7 +29,7 @@
 
 ## 1. Tính Năng Nổi Bật 
 
-### 2.1 📱 Quét & Quản Lý Thiết Bị LAN (LAN Clients)
+### 📱 Quét & Quản Lý Thiết Bị LAN (LAN Clients)
 > 📸 *Ảnh demo chính ở đầu trang — Tab "Danh sách thiết bị kết nối"*
 
 - Quét toàn bộ dải mạng (VD: `192.168.1.0/24`) bằng **Ping Sweep đa luồng** kết hợp bảng ARP & TCP socket check.
