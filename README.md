@@ -165,26 +165,7 @@ python run.py
 
 ---
 
-## 12. Danh Mục API Endpoints
-
-| Phương thức | Endpoint | Chức năng |
-| :---: | :--- | :--- |
-| `GET` | `/api/health` | Kiểm tra trạng thái máy chủ |
-| `GET` | `/api/stats` | Số thiết bị, uptime, tốc độ mạng, latency |
-| `GET` | `/api/network` | IP nội bộ, Gateway, Subnet, DNS |
-| `GET` | `/api/network/adapter` | Chi tiết card mạng Wi-Fi/Ethernet |
-| `POST` | `/api/network/isp-lookup` | Tra cứu ISP, ASN, Public IP (Opt-in) |
-| `GET` | `/api/devices` | Danh sách thiết bị LAN kèm OS, Vendor, Ports, Ping |
-| `POST` | `/api/devices/scan` | Yêu cầu quét dải mạng ngay |
-| `PATCH` | `/api/devices/{mac}` | Sửa tên thân thiện / loại thiết bị |
-| `GET` | `/api/connections` | Socket TCP/UDP kèm Dịch vụ & Tiến trình |
-| `GET` | `/api/packets` | Gói tin bắt được gần nhất |
-| `GET` | `/api/security/events` | Sự kiện cảnh báo an ninh SOC |
-| `WS` | `/ws/dashboard` | Kênh WebSocket dữ liệu thời gian thực |
-
----
-
-## 13. Xử Lý Sự Cố (Troubleshooting)
+## 12. Xử Lý Sự Cố (Troubleshooting)
 
 | Hiện tượng | Nguyên nhân & Cách xử lý |
 | :--- | :--- |
@@ -196,7 +177,7 @@ python run.py
 
 ---
 
-## 14. Giấy Phép (License)
+## 13. Giấy Phép (License)
 
 Dự án được phát hành theo giấy phép **MIT** — xem toàn văn tại [LICENSE](LICENSE).
 
