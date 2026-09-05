@@ -225,15 +225,7 @@ python run.py
 
 ---
 
-## 9. Tài Liệu Nghiên Cứu Chuyên Sâu
-
-- 📚 **Giáo trình đào tạo an ninh mạng**: [docs/NETWORK_SECURITY_CURRICULUM.md](docs/NETWORK_SECURITY_CURRICULUM.md)
-- 🗺️ **Bản đồ kiến trúc hệ thống**: [docs/ARCHITECTURE_ROADMAP.md](docs/ARCHITECTURE_ROADMAP.md)
-- 📸 **Hướng dẫn bổ sung ảnh demo**: [docs/images/README.md](docs/images/README.md)
-
----
-
-## 10. Giấy Phép (License)
+## 9. Giấy Phép (License)
 
 Dự án được phát hành theo giấy phép **MIT** — xem toàn văn tại [LICENSE](LICENSE).
 
