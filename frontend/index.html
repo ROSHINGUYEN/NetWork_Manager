@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hệ Thống Quản Trị Mạng LAN</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2220%22 fill=%22%23EE0033%22/><text y=%22.75em%22 x=%2250%25%22 text-anchor=%22middle%22 font-size=%2260%22 fill=%22white%22 font-weight=%22bold%22 font-family=%22sans-serif%22>V</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- 1. Thanh Header phong cách Viettel Telecom -->
+  <header class="viettel-header">
+    <div class="header-container">
+      <div class="brand-box">
+        <div class="viettel-logo">
+          <span class="logo-txt">NETWORK MANAGER</span>
+        </div>
+        <div class="brand-divider"></div>
+        <div class="portal-info">
+          <h1 class="portal-title">TRANG QUẢN TRỊ THIẾT BỊ MẠNG</h1>
+          <span class="portal-model" id="gateway-model-text">Modem GPON Gateway &bull; Dải mạng LAN ***.***.***.*** /24</span>
+        </div>
+      </div>
+
+      <div class="header-status-box">
+        <div class="status-item">
+          <span class="label">Internet:</span>
+          <span class="status-val online" id="top-internet-status">● Đang kết nối</span>
+        </div>
+        <div class="status-item security-shield-item" id="top-shield-indicator" title="Hệ thống tự động: Chặn chụp màn hình & Bảo vệ ẩn IP mạng">
+          <span class="shield-dot-pulse">●</span>
+          <span class="label">Bảo vệ:</span>
+          <span class="status-val text-green" id="top-shield-text">Anti-Capture ON</span>
+        </div>
+        <div class="status-item time-item">
+          <span id="system-clock">--:--:--</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- 2. Thanh Menu Điều Hướng (Router Tabs) -->
+  <nav class="router-nav">
+    <div class="nav-container">
+      <ul class="nav-tabs">
+        <li class="nav-tab-item active" data-tab="devices">
+          <a href="#devices">📱 Danh sách thiết bị kết nối (LAN Clients)</a>
+        </li>
+        <li class="nav-tab-item" data-tab="traffic">
+          <a href="#traffic">📊 Thống kê lưu lượng &amp; Băng thông</a>
+        </li>
+        <li class="nav-tab-item" data-tab="connections">
+          <a href="#connections">🔌 Giám sát Kết nối &amp; Gói tin (L3/L4)</a>
+        </li>
+        <li class="nav-tab-item" data-tab="security">
+          <a href="#security">🛡️ Trung tâm An ninh Mạng (SOC)</a>
+        </li>
+        <li class="nav-tab-item" data-tab="lab">
+          <a href="#lab">🧪 Security Lab (Phòng Thủ Mạng)</a>
+        </li>
+        <li class="nav-tab-item" data-tab="events">
+          <a href="#events">📋 Nhật ký hệ thống (System Logs)</a>
+        </li>
+      </ul>
+      <div class="quick-summary">
+        Đang online: <strong id="quick-online-count">0</strong> / <span id="quick-total-count">0</span> thiết bị
+      </div>
+    </div>
+  </nav>
+
+  <!-- 3. Nội Dung Chính -->
+  <main class="main-wrapper">
+
+    <!-- 4 Khối thông số tóm tắt (System Summary Cards) -->
+    <section class="summary-cards">
+      <div class="summary-card">
+        <div class="card-icon internet-icon">🌐</div>
+        <div class="card-details">
+          <span class="card-title">KẾT NỐI INTERNET</span>
+          <div class="card-main-val text-green" id="card-internet-val">Bình thường</div>
+          <div class="card-sub" id="card-internet-sub">Độ trễ: -- ms</div>
+        </div>
+      </div>
+
+      <div class="summary-card">
+        <div class="card-icon gateway-icon">📡</div>
+        <div class="card-details">
+          <span class="card-title">CỔNG GATEWAY (ROUTER)</span>
+          <div class="card-main-val" id="card-gateway-val">***.***.***.***</div>
+          <div class="card-sub" id="card-subnet-sub">Subnet: ***.***.***.*** /24</div>
+        </div>
+      </div>
+
+      <div class="summary-card">
+        <div class="card-icon devices-icon">💻</div>
+        <div class="card-details">
+          <span class="card-title">THIẾT BỊ HOẠT ĐỘNG</span>
+          <div class="card-main-val text-blue" id="card-devices-val">0 / 0 Online</div>
+          <div class="card-sub" id="card-devices-sub">Độ trễ TB: -- ms</div>
+        </div>
+      </div>
+
+      <div class="summary-card">
+        <div class="card-icon traffic-icon">⚡</div>
+        <div class="card-details">
+          <span class="card-title">BĂNG THÔNG MÁY CHỦ</span>
+          <div class="card-main-val" id="card-traffic-val">↓ 0 B/s &nbsp; ↑ 0 B/s</div>
+          <div class="card-sub" id="card-traffic-iface">Card: Ethernet</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tab 1: Danh Sách Thiết Bị Kết Nối (LAN Client List) -->
+    <section class="tab-content-section" id="tab-devices">
+      <div class="content-box">
+        
+        <div class="box-header">
+          <div class="box-title-group">
+            <h2 class="box-title">DANH SÁCH THIẾT BỊ KẾT NỐI (LAN CLIENT LIST)</h2>
+            <p class="box-desc">Quản lý và giám sát tất cả các thiết bị kết nối vào mạng LAN thông qua dây cáp hoặc Wi-Fi</p>
+          </div>
+
+          <!-- Khu vực điều khiển quét dải IP -->
+          <div class="scan-control-panel">
+            <div class="input-inline-group">
+              <label for="scan-range-input">Dải IP quét:</label>
+              <input type="text" id="scan-range-input" value="" placeholder="Ví dụ: 192.168.1.0/24 hoặc 10.0.0.0/24" title="Nhập dải IP mạng cần quét" />
+            </div>
+            <button type="button" class="btn-viettel-scan" id="btn-scan">
+              <span class="btn-icon">🔄</span>
+              <span id="scan-label">Quét mạng ngay</span>
+            </button>
+            <button type="button" class="btn-viettel-privacy is-masked" id="btn-toggle-ip-mask" title="Ẩn hoặc hiện toàn bộ địa chỉ IP mạng nội bộ (Privacy Mode)">
+              <span class="btn-icon" id="ip-mask-icon">🔒</span>
+              <span id="ip-mask-label">Hiện IP mạng</span>
+            </button>
+            <button type="button" class="btn-viettel-shield-test" id="btn-test-shield" title="Thử nghiệm kích hoạt khiên đỏ cảnh báo chống chụp màn hình">
+              <span class="btn-icon">🚨</span>
+              <span>Test Chống Chụp</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Bộ lọc và tìm kiếm nhanh -->
+        <div class="filter-toolbar">
+          <div class="filter-left">
+            <span class="filter-label">Bộ lọc trạng thái:</span>
+            <div class="filter-pills">
+              <button type="button" class="pill-btn active" data-filter="all">Tất cả (<span id="count-all">0</span>)</button>
+              <button type="button" class="pill-btn" data-filter="online">Đang Online (<span id="count-online">0</span>)</button>
+              <button type="button" class="pill-btn" data-filter="offline">Đã Offline (<span id="count-offline">0</span>)</button>
+            </div>
+          </div>
+
+          <div class="filter-right">
+            <div class="search-field">
+              <input type="text" id="search-input" placeholder="Tìm theo IP, tên, hãng, MAC..." autocomplete="off" />
+              <button type="button" class="btn-clear-search" id="clear-search" style="display: none;">✕</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bảng danh sách thiết bị chuẩn Modem Router -->
+        <div class="table-responsive">
+          <table class="viettel-table">
+            <thead>
+              <tr>
+                <th style="width: 45px; text-align: center;">STT</th>
+                <th style="width: 100px;">Trạng thái</th>
+                <th style="min-width: 200px;">Tên thiết bị &amp; Gợi nhớ</th>
+                <th style="width: 140px;">Địa chỉ IP</th>
+                <th style="width: 160px;">Địa chỉ MAC</th>
+                <th style="min-width: 170px;">Hãng sản xuất</th>
+                <th style="width: 145px;">Hệ điều hành (OS)</th>
+                <th style="width: 140px;">Cổng mở (Ports)</th>
+                <th style="width: 90px; text-align: right;">Độ trễ</th>
+                <th style="width: 110px;">Thấy lần cuối</th>
+                <th style="width: 75px; text-align: center;">Thao tác</th>
+              </tr>
+            </thead>
+            <tbody id="devices-tbody">
+              <tr class="empty-state-row">
+                <td colspan="11">
+                  <div class="table-loading-box">
+                    <span class="loading-spin"></span>
+                    <span>Đang nạp dữ liệu thiết bị mạng LAN...</span>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="table-footer-info">
+          <span>* Ghi chú: Nhấp vào nút cây bút ✏️ để đặt tên thân thiện cho từng thiết bị (như Camera phòng khách, iPhone của Nam...).</span>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Tab 2: Thống Kê Băng Thông & Máy Chủ -->
+    <section class="tab-content-section" id="tab-traffic" style="display: none;">
+      <div class="grid-2-col">
+        
+        <!-- Biểu đồ lưu lượng -->
+        <div class="content-box">
+          <div class="box-header">
+            <div class="box-title-group">
+              <h2 class="box-title">BIỂU ĐỒ BĂNG THÔNG THỜI GIAN THỰC (REALTIME TRAFFIC)</h2>
+              <p class="box-desc">Lưu lượng truyền tải qua card mạng của máy chủ giám sát</p>
+            </div>
+            <div class="chart-legend">
+              <span class="legend-color download"></span> Tải về (Download)
+              <span class="legend-color upload" style="margin-left: 15px;"></span> Tải lên (Upload)
+            </div>
+          </div>
+          <div class="chart-container">
+            <canvas id="traffic-canvas" width="600" height="220"></canvas>
+          </div>
+        </div>
+
+        <!-- Thông tin máy chủ -->
+        <div class="content-box">
+          <div class="box-header">
+            <div class="box-title-group">
+              <h2 class="box-title">THÔNG TIN HỆ THỐNG MÁY CHỦ (SYSTEM SPECS)</h2>
+              <p class="box-desc">Cấu hình mạng cục bộ của máy đang chạy chương trình</p>
+            </div>
+          </div>
+          <table class="spec-table">
+            <tbody>
+              <tr>
+                <td class="spec-name">Tên máy tính (Hostname):</td>
+                <td class="spec-value" id="host-hostname">--</td>
+              </tr>
+              <tr>
+                <td class="spec-name">Địa chỉ IP nội bộ:</td>
+                <td class="spec-value text-blue" id="host-ip">--</td>
+              </tr>
+              <tr>
+                <td class="spec-name">Cổng Gateway mặc định:</td>
+                <td class="spec-value" id="host-gw">--</td>
+              </tr>
+              <tr>
+                <td class="spec-name">Subnet Mask / Dải CIDR:</td>
+                <td class="spec-value" id="host-subnet">--</td>
+              </tr>
+              <tr>
+                <td class="spec-name">Địa chỉ MAC máy chủ:</td>
+                <td class="spec-value" id="host-mac">--</td>
+              </tr>
+              <tr>
+                <td class="spec-name">Thời gian hoạt động (Uptime):</td>
+                <td class="spec-value" id="host-uptime">--</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+
+      <!-- Hàng thông số Adapter Wi-Fi/Ethernet & Tra cứu ISP -->
+      <div class="grid-2-col" style="margin-top: 20px;">
+        
+        <!-- Widget Adapter & Wi-Fi / Ethernet -->
+        <div class="content-box">
+          <div class="box-header">
+            <div class="box-title-group">
+              <h2 class="box-title">THÔNG SỐ ADAPTER WI-FI / ETHERNET</h2>
+              <p class="box-desc">Card mạng vật lý và thông số sóng Wi-Fi thời gian thực</p>
+            </div>
+            <span class="badge-adapter-type" id="adapter-badge-type">Đang kiểm tra...</span>
+          </div>
+          <table class="spec-table">
+            <tbody>
+              <tr>
+                <td class="spec-name">Tên Card mạng (Adapter):</td>
+                <td class="spec-value" id="adapter-name">Ethernet / Wi-Fi</td>
+              </tr>
+              <tr id="wifi-row-ssid" style="display: none;">
+                <td class="spec-name">Tên mạng Wi-Fi (SSID):</td>
+                <td class="spec-value text-blue" id="wifi-ssid">--</td>
+              </tr>
+              <tr id="wifi-row-bssid" style="display: none;">
+                <td class="spec-name">Địa chỉ Trạm phát (BSSID):</td>
+                <td class="spec-value" id="wifi-bssid">--</td>
+              </tr>
+              <tr id="wifi-row-signal" style="display: none;">
+                <td class="spec-name">Cường độ tín hiệu Wi-Fi:</td>
+                <td class="spec-value" id="wifi-signal-cell">
+                  <div class="wifi-signal-meter">
+                    <div class="wifi-signal-fill" id="wifi-signal-fill" style="width: 0%;"></div>
+                    <span id="wifi-signal-text">--</span>
+                  </div>
+                </td>
+              </tr>
+              <tr id="wifi-row-radio" style="display: none;">
+                <td class="spec-name">Chuẩn sóng Radio:</td>
+                <td class="spec-value" id="wifi-radio">--</td>
+              </tr>
+              <tr>
+                <td class="spec-name">Tốc độ liên kết (Link Speed):</td>
+                <td class="spec-value text-green" id="adapter-speed">1000 Mbps</td>
+              </tr>
+              <tr>
+                <td class="spec-name">Chế độ truyền dẫn / MTU:</td>
+                <td class="spec-value" id="adapter-duplex-mtu">Full Duplex / MTU 1500</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Khối Tra cứu ISP / Public IP (Opt-In Chấp thuận) -->
+        <div class="content-box">
+          <div class="box-header">
+            <div class="box-title-group">
+              <h2 class="box-title">THÔNG TIN NHÀ MẠNG &amp; INTERNET (ISP &amp; ASN)</h2>
+              <p class="box-desc">Tra cứu địa chỉ IP công cộng và nhà cung cấp dịch vụ Internet</p>
+            </div>
+            <span class="privacy-lock-badge" title="Chế độ bảo vệ riêng tư: Cần người dùng nhấn cho phép">🔒 Quyền riêng tư</span>
+          </div>
+
+          <!-- Trạng thái chờ chấp thuận -->
+          <div id="isp-consent-box" class="isp-consent-container">
+            <div class="consent-icon">🛡️</div>
+            <p class="consent-text">
+              Nhằm <strong>bảo vệ quyền riêng tư tuyệt đối</strong>, hệ thống <strong>không tự ý gửi gói tin ra Internet</strong> để lấy Public IP khi chưa có sự đồng ý của bạn.
+            </p>
+            <button type="button" class="btn-viettel-isp-lookup" id="btn-lookup-isp">
+              🌐 Kiểm Tra ISP &amp; Public IP Ngay
+            </button>
+          </div>
+
+          <!-- Kết quả tra cứu (Ẩn ban đầu) -->
+          <div id="isp-results-box" style="display: none;">
+            <table class="spec-table">
+              <tbody>
+                <tr>
+                  <td class="spec-name">Địa chỉ Public IP:</td>
+                  <td class="spec-value text-red" id="isp-public-ip">--</td>
+                </tr>
+                <tr>
+                  <td class="spec-name">Nhà mạng (ISP):</td>
+                  <td class="spec-value text-blue" id="isp-name">--</td>
+                </tr>
+                <tr>
+                  <td class="spec-name">Số hiệu mạng (ASN):</td>
+                  <td class="spec-value" id="isp-asn">--</td>
+                </tr>
+                <tr>
+                  <td class="spec-name">Vị trí địa lý (City, Country):</td>
+                  <td class="spec-value" id="isp-location">--</td>
+                </tr>
+                <tr>
+                  <td class="spec-name">Thời điểm kiểm tra:</td>
+                  <td class="spec-value" id="isp-time">--</td>
+                </tr>
+              </tbody>
+            </table>
+            <div style="text-align: right; margin-top: 10px;">
+              <button type="button" class="btn-viettel-refresh-isp" id="btn-refresh-isp">🔄 Kiểm tra lại</button>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Tab 3: Nhật Ký Hệ Thống (System Logs) -->
+    <section class="tab-content-section" id="tab-events" style="display: none;">
+      <div class="content-box">
+        <div class="box-header">
+          <div class="box-title-group">
+            <h2 class="box-title">NHẬT KÝ SỰ KIỆN MẠNG (SYSTEM EVENT LOG)</h2>
+            <p class="box-desc">Ghi nhận toàn bộ sự kiện thiết bị mới, online, offline hoặc thay đổi IP</p>
+          </div>
+        </div>
+        <div class="events-scroll-container">
+          <ul class="viettel-event-list" id="event-feed">
+            <li class="event-none">Chưa có sự kiện nào.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tab 4: Kết Nối & Gói Tin (Connections & Packets) -->
+    <section class="tab-content-section" id="tab-connections" style="display: none;">
+      <div class="grid-2-col">
+        <!-- Bảng Kết nối Active -->
+        <div class="content-box">
+          <div class="box-header">
+            <h2 class="box-title">KẾT NỐI ĐANG HOẠT ĐỘNG (ACTIVE CONNECTIONS)</h2>
+            <p class="box-desc">Các luồng TCP/UDP L4 đang truyền tải dữ liệu</p>
+          </div>
+          <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+            <table class="viettel-table">
+              <thead>
+                <tr>
+                  <th>Nguồn</th>
+                  <th>Đích</th>
+                  <th>Giao thức</th>
+                  <th>Dịch vụ (Service)</th>
+                  <th>Trạng thái</th>
+                  <th>Tiến trình</th>
+                </tr>
+              </thead>
+              <tbody id="connections-tbody">
+                <tr class="empty-state-row"><td colspan="6">Đang tải kết nối...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Bảng Gói tin bắt được -->
+        <div class="content-box">
+          <div class="box-header">
+            <h2 class="box-title">PHÂN TÍCH GÓI TIN (PACKET SNIFFER)</h2>
+            <p class="box-desc">Mẫu các gói tin mạng vừa bắt được (L2/L3)</p>
+          </div>
+          <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+            <table class="viettel-table">
+              <thead>
+                <tr>
+                  <th>Thời gian</th>
+                  <th>Loại</th>
+                  <th>Kích thước</th>
+                  <th>Chi tiết Packet</th>
+                </tr>
+              </thead>
+              <tbody id="packets-tbody">
+                <tr class="empty-state-row"><td colspan="4">Đang tải gói tin...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tab 5: Trung tâm An ninh Mạng (Security SOC) -->
+    <section class="tab-content-section" id="tab-security" style="display: none;">
+      <div class="content-box">
+        <div class="box-header">
+          <div class="box-title-group">
+            <h2 class="box-title">TRUNG TÂM GIÁM SÁT AN NINH MẠNG (SECURITY SOC)</h2>
+            <p class="box-desc">Phát hiện bất thường: Xung đột IP, ARP Spoofing, Port Scan, Kết nối nguy hiểm</p>
+          </div>
+          <div class="threat-stats">
+            <span class="threat-badge info">Info: <span id="threat-info-count">0</span></span>
+            <span class="threat-badge warning">Cảnh báo: <span id="threat-warn-count">0</span></span>
+            <span class="threat-badge critical">Nghiêm trọng: <span id="threat-crit-count">0</span></span>
+          </div>
+        </div>
+        
+        <div class="table-responsive">
+          <table class="viettel-table threat-table">
+            <thead>
+              <tr>
+                <th style="width: 150px;">Thời gian</th>
+                <th style="width: 120px;">Mức độ</th>
+                <th style="width: 180px;">Loại Đe Dọa</th>
+                <th style="width: 150px;">Nguồn IP</th>
+                <th style="min-width: 250px;">Chi tiết phát hiện (Rule)</th>
+              </tr>
+            </thead>
+            <tbody id="security-tbody">
+              <tr class="empty-state-row">
+                <td colspan="5">Tuyệt vời! Không phát hiện mối đe dọa an ninh nào.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tab 6: Security Lab Mode (Phòng Thủ An Ninh Mạng Thực Hành) -->
+    <section class="tab-content-section" id="tab-lab" style="display: none;">
+      <div class="content-box">
+        <div class="box-header">
+          <div class="box-title-group">
+            <h2 class="box-title">🧪 PHÒNG THÍ NGHIỆM AN NINH MẠNG (SECURITY LAB MODE)</h2>
+            <p class="box-desc">Mô phỏng và thực hành phòng thủ mạng có kiểm soát trên Localhost &bull; Chuẩn giáo trình SOC: Vulnerability &rarr; Attack Concept &rarr; Detection &rarr; Mitigation &rarr; Secure Implementation</p>
+          </div>
+          <div class="lab-global-status">
+            <span class="lab-tag-safe">🛡️ Safe Sandbox &bull; Localhost Controlled</span>
+          </div>
+        </div>
+
+        <div class="lab-instruction-banner">
+          <div class="banner-icon">ℹ️</div>
+          <div class="banner-content">
+            <strong>Mục tiêu đào tạo:</strong> Mỗi bài thực hành giúp bạn hiểu rõ nguyên lý hoạt động của các cuộc tấn công mạng LAN phổ biến, cách SOC phát hiện từ cấp độ gói tin và cách lập trình / cấu hình các biện pháp phòng vệ kiên cố. Nhấp vào nút <strong>"▶️ Chạy Mô Phỏng"</strong> để quan sát phản hồi thời gian thực của hệ thống.
+          </div>
+        </div>
+
+        <!-- Container chứa 5 bài Lab tương tác -->
+        <div class="security-lab-list" id="security-lab-list">
+          <div class="table-loading-box">
+            <span class="loading-spin"></span>
+            <span>Đang nạp dữ liệu các bài Lab An ninh mạng...</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- 5. Modal Đặt Tên Thiết Bị (Fixed Overlay) -->
+  <div class="modal-overlay" id="edit-modal" style="display: none;">
+    <div class="modal-window">
+      <div class="modal-head">
+        <h3>✏️ ĐẶT TÊN &amp; PHÂN LOẠI THIẾT BỊ</h3>
+        <button type="button" class="btn-close" id="modal-close">&times;</button>
+      </div>
+      <form id="edit-form" class="modal-body">
+        <input type="hidden" id="edit-mac" />
+
+        <div class="form-row">
+          <label>Địa chỉ IP &amp; MAC:</label>
+          <div class="readonly-badge">
+            <span id="modal-device-ip">***.***.***.***</span> &bull; 
+            <span id="modal-device-mac">••:••:••:••:••:••</span>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <label for="input-custom-name">Tên gợi nhớ thân thiện: <span class="req">*</span></label>
+          <input type="text" id="input-custom-name" placeholder="Ví dụ: Camera Cổng, TV Phòng Khách, Điện thoại Ba..." maxlength="50" required />
+          <p class="help-text">Tên gợi nhớ này sẽ được lưu cố định vào cơ sở dữ liệu để tiện theo dõi.</p>
+        </div>
+
+        <div class="form-row">
+          <label>Loại thiết bị:</label>
+          <div class="type-grid" id="type-selector">
+            <button type="button" class="type-btn" data-type="router">🌐 Router / Modem</button>
+            <button type="button" class="type-btn" data-type="camera">📹 Camera an ninh</button>
+            <button type="button" class="type-btn" data-type="phone">📱 Điện thoại / Tablet</button>
+            <button type="button" class="type-btn" data-type="pc">💻 Máy tính / Laptop</button>
+            <button type="button" class="type-btn" data-type="tv">📺 Smart TV / Box</button>
+            <button type="button" class="type-btn" data-type="iot">🔌 Thiết bị Smart Home</button>
+            <button type="button" class="type-btn active" data-type="other">⚙️ Thiết bị khác</button>
+          </div>
+        </div>
+
+        <div class="modal-foot">
+          <button type="button" class="btn-cancel" id="modal-cancel">Đóng</button>
+          <button type="submit" class="btn-save" id="modal-save">Lưu cấu hình</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 4. KHIÊN ĐỎ BẢO MẬT CHỐNG CHỤP MÀN HÌNH (ANTI-SCREENSHOT RED WARNING SHIELD) -->
+  <div id="security-screenshot-shield" class="security-screenshot-shield" style="display: none;" aria-hidden="true">
+    <div class="shield-hazard-stripe top"></div>
+    <div class="shield-hazard-stripe bottom"></div>
+    
+    <div class="shield-watermark-overlay">
+      <div class="watermark-line">🚨 CHỐNG CHỤP MÀN HÌNH &bull; CONFIDENTIAL LAN DATA &bull; ANTI-SCREENSHOT SHIELD &bull; BẢO VỆ DỮ LIỆU IP 🚨</div>
+      <div class="watermark-line">🚨 CHỐNG CHỤP MÀN HÌNH &bull; CONFIDENTIAL LAN DATA &bull; ANTI-SCREENSHOT SHIELD &bull; BẢO VỆ DỮ LIỆU IP 🚨</div>
+      <div class="watermark-line">🚨 CHỐNG CHỤP MÀN HÌNH &bull; CONFIDENTIAL LAN DATA &bull; ANTI-SCREENSHOT SHIELD &bull; BẢO VỆ DỮ LIỆU IP 🚨</div>
+      <div class="watermark-line">🚨 CHỐNG CHỤP MÀN HÌNH &bull; CONFIDENTIAL LAN DATA &bull; ANTI-SCREENSHOT SHIELD &bull; BẢO VỆ DỮ LIỆU IP 🚨</div>
+      <div class="watermark-line">🚨 CHỐNG CHỤP MÀN HÌNH &bull; CONFIDENTIAL LAN DATA &bull; ANTI-SCREENSHOT SHIELD &bull; BẢO VỆ DỮ LIỆU IP 🚨</div>
+    </div>
+
+    <div class="shield-dialog-card">
+      <div class="shield-alarm-beacon">
+        <span class="shield-beacon-wave wave-1"></span>
+        <span class="shield-beacon-wave wave-2"></span>
+        <span class="shield-alarm-emoji">🚨</span>
+      </div>
+
+      <h1 class="shield-main-title">🛡️ BẢO MẬT TUYỆT ĐỐI &bull; CHỐNG CHỤP MÀN HÌNH</h1>
+      <div class="shield-violation-badge">KHÔNG AI CÓ THỂ XEM HAY THU THẬP THÔNG TIN MẠNG (ZERO-LEAK ACTIVE)</div>
+
+      <p class="shield-description">
+        Hệ thống phòng vệ <strong>Network Security Monitor</strong> đã kích hoạt giao thức cô lập toàn diện.<br>
+        Toàn bộ dữ liệu IP, MAC, thông số card mạng và kết nối đã được <strong>khóa mờ 100%</strong>. Bất kỳ công cụ chụp màn hình (Snipping Tool, PrtScn, Screen Recorder) <strong>chỉ thu được nền cảnh báo đỏ này</strong>, tuyệt đối không thể thấy được cấu trúc mạng.
+      </p>
+
+      <div class="shield-meta-box">
+        <div class="meta-row">
+          <span class="meta-name">Trạng thái phòng vệ:</span>
+          <span class="meta-status-active">ĐÃ KHÓA BẢO MẬT &bull; KHÔNG AI CÓ THỂ XEM</span>
+        </div>
+        <div class="meta-row">
+          <span class="meta-name">Dữ liệu IP &amp; Thiết bị LAN:</span>
+          <span class="meta-status-secure">ẨN 100% (FULL MASK &amp; BLURRED)</span>
+        </div>
+        <div class="meta-row">
+          <span class="meta-name">Thời điểm kích hoạt:</span>
+          <span class="meta-value" id="shield-detected-time">--:--:--</span>
+        </div>
+        <div class="meta-row">
+          <span class="meta-name">Hành vi bị ngăn chặn:</span>
+          <span class="meta-value" id="shield-detected-reason">Phát hiện thao tác chụp màn hình (PrtScn / Snipping Tool)</span>
+        </div>
+      </div>
+
+      <div class="shield-btn-group">
+        <button type="button" class="btn-unlock-shield" id="btn-unlock-shield">
+          🛡️ Tôi Đã Hiểu &bull; Mở Khóa Màn Hình (<span id="shield-countdown">3</span>s)
+        </button>
+      </div>
+
+      <div class="shield-footer-tag">
+        SECURITY SOC PRIVACY PROTOCOL &bull; ANTI-SCREENSHOT ZERO EXPOSURE
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast thông báo -->
+  <div class="toast-stack" id="toast-container"></div>
+
+  <!-- Thư viện Chart.js cho biểu đồ mượt mà và đẹp mắt -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- JavaScript logic thuần (Không framework) -->
+  <script src="js/app.js"></script>
+</body>
+</html>

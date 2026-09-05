@@ -1,0 +1,1755 @@
+/* =========================================================================
+   Giao diện Quản Trị Cổng Mạng LAN - Chuẩn phong cách Viettel Home Gateway
+   Thiết kế giao diện rõ ràng, phân tab chuyên nghiệp, đường nét kẻ ô chuẩn mực
+   ========================================================================= */
+
+:root {
+  --viettel-red: #EE0033;
+  --viettel-red-hover: #CC002B;
+  --viettel-dark: #0A192F;
+  --viettel-navy: #102A45;
+  --header-bg: #1B2430;
+
+  --bg-page: #F0F2F5;
+  --bg-white: #FFFFFF;
+  --bg-subtle: #F8FAFC;
+  --border-light: #E2E8F0;
+  --border-dark: #CBD5E1;
+
+  --text-main: #1E293B;
+  --text-sub: #64748B;
+  --text-muted: #94A3B8;
+
+  --color-online: #16A34A;
+  --color-online-bg: #DCFCE7;
+  --color-offline: #64748B;
+  --color-offline-bg: #F1F5F9;
+
+  --font-base: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', Consolas, 'Courier New', monospace;
+
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-popup: 0 10px 25px -5px rgba(0, 0, 0, 0.25), 0 8px 10px -6px rgba(0, 0, 0, 0.2);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg-page);
+  color: var(--text-main);
+  font-family: var(--font-base);
+  font-size: 13.5px;
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+/* -------------------------------------------------------------------------
+   1. HEADER CỔNG VIETTEL
+   ------------------------------------------------------------------------- */
+.viettel-header {
+  background: var(--header-bg);
+  color: #FFFFFF;
+  border-bottom: 3px solid var(--viettel-red);
+  padding: 12px 24px;
+}
+
+.header-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.brand-box {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.viettel-logo {
+  background: var(--viettel-red);
+  padding: 6px 14px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-txt {
+  font-weight: 900;
+  font-size: 17px;
+  letter-spacing: 1px;
+  color: #FFFFFF;
+  font-family: sans-serif;
+}
+
+.brand-divider {
+  width: 1px;
+  height: 32px;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.portal-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.portal-title {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  color: #FFFFFF;
+}
+
+.portal-model {
+  font-size: 11.5px;
+  color: #94A3B8;
+}
+
+.header-status-box {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 12.5px;
+}
+
+.status-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.status-item .label {
+  color: #94A3B8;
+}
+
+.status-val.online {
+  color: #4ADE80;
+  font-weight: 600;
+}
+
+.status-val.offline {
+  color: #F87171;
+  font-weight: 600;
+}
+
+.status-val.realtime {
+  color: #38BDF8;
+  font-weight: 600;
+}
+
+.time-item {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  color: #E2E8F0;
+}
+
+/* -------------------------------------------------------------------------
+   2. THANH MENU ĐIỀU HƯỚNG TABS
+   ------------------------------------------------------------------------- */
+.router-nav {
+  background: var(--bg-white);
+  border-bottom: 1px solid var(--border-light);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.nav-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+}
+
+.nav-tabs {
+  list-style: none;
+  display: flex;
+  gap: 4px;
+}
+
+.nav-tab-item a {
+  display: block;
+  padding: 14px 18px;
+  text-decoration: none;
+  color: var(--text-main);
+  font-weight: 600;
+  font-size: 13.5px;
+  border-bottom: 3px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.nav-tab-item:hover a {
+  color: var(--viettel-red);
+  background: var(--bg-subtle);
+}
+
+.nav-tab-item.active a {
+  color: var(--viettel-red);
+  border-bottom-color: var(--viettel-red);
+  background: var(--bg-subtle);
+}
+
+.quick-summary {
+  font-size: 13px;
+  color: var(--text-sub);
+}
+
+.quick-summary strong {
+  color: var(--color-online);
+}
+
+/* -------------------------------------------------------------------------
+   3. NỘI DUNG CHÍNH (MAIN LAYOUT)
+   ------------------------------------------------------------------------- */
+.main-wrapper {
+  max-width: 1400px;
+  margin: 20px auto 40px auto;
+  padding: 0 24px;
+}
+
+/* 4 Khối thông số tổng quan */
+.summary-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.summary-card {
+  background: var(--bg-white);
+  border: 1px solid var(--border-light);
+  border-radius: 6px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  box-shadow: var(--shadow-card);
+}
+
+.card-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
+  background: #F1F5F9;
+}
+
+.card-title {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-sub);
+  letter-spacing: 0.5px;
+}
+
+.card-main-val {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-top: 2px;
+}
+
+.card-sub {
+  font-size: 11.5px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.text-green { color: var(--color-online) !important; }
+.text-blue { color: #0284C7 !important; }
+
+/* Hộp nội dung (Content Box) */
+.content-box {
+  background: var(--bg-white);
+  border: 1px solid var(--border-light);
+  border-radius: 6px;
+  box-shadow: var(--shadow-card);
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.box-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border-light);
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.box-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-main);
+  letter-spacing: -0.2px;
+}
+
+.box-desc {
+  font-size: 12.5px;
+  color: var(--text-sub);
+  margin-top: 2px;
+}
+
+/* Panel điều khiển dải IP và nút quét */
+.scan-control-panel {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.input-inline-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #F8FAFC;
+  border: 1px solid var(--border-dark);
+  padding: 6px 12px;
+  border-radius: 4px;
+}
+
+.input-inline-group label {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text-main);
+  white-space: nowrap;
+}
+
+.input-inline-group input {
+  border: none;
+  background: none;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 600;
+  color: #0284C7;
+  width: 135px;
+  outline: none;
+}
+
+.btn-viettel-scan {
+  background: var(--viettel-red);
+  color: #FFFFFF;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: background 0.15s ease;
+}
+
+.btn-viettel-scan:hover {
+  background: var(--viettel-red-hover);
+}
+
+.btn-viettel-scan.scanning {
+  opacity: 0.8;
+  cursor: not-allowed;
+}
+
+.btn-viettel-scan.scanning .btn-icon {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Toolbar bộ lọc & tìm kiếm */
+.filter-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.filter-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.filter-label {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text-sub);
+}
+
+.filter-pills {
+  display: flex;
+  gap: 6px;
+}
+
+.pill-btn {
+  background: #F1F5F9;
+  border: 1px solid var(--border-light);
+  color: var(--text-main);
+  padding: 5px 12px;
+  border-radius: 4px;
+  font-size: 12.5px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.pill-btn:hover {
+  background: #E2E8F0;
+}
+
+.pill-btn.active {
+  background: var(--viettel-red);
+  color: #FFFFFF;
+  border-color: var(--viettel-red);
+  font-weight: 600;
+}
+
+.search-field {
+  position: relative;
+  width: 280px;
+}
+
+.search-field input {
+  width: 100%;
+  padding: 7px 32px 7px 12px;
+  border: 1px solid var(--border-dark);
+  border-radius: 4px;
+  font-size: 13px;
+  outline: none;
+}
+
+.search-field input:focus {
+  border-color: #0284C7;
+  box-shadow: 0 0 0 2px rgba(2, 132, 199, 0.15);
+}
+
+.btn-clear-search {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+/* -------------------------------------------------------------------------
+   4. BẢNG DỮ LIỆU THIẾT BỊ CHUẨN MODEM ROUTER
+   ------------------------------------------------------------------------- */
+.table-responsive {
+  overflow-x: auto;
+  border: 1px solid var(--border-light);
+  border-radius: 4px;
+}
+
+.viettel-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  text-align: left;
+}
+
+.viettel-table thead th {
+  background: #F8FAFC;
+  color: var(--text-main);
+  font-weight: 700;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  padding: 10px 12px;
+  border-bottom: 2px solid var(--border-light);
+  white-space: nowrap;
+}
+
+.viettel-table tbody td {
+  padding: 10px 12px;
+  border-bottom: 1px solid #EDF2F7;
+  vertical-align: middle;
+}
+
+.viettel-table tbody tr:nth-child(even) {
+  background-color: #FAFCFE;
+}
+
+.viettel-table tbody tr:hover {
+  background-color: #EFF6FF;
+}
+
+/* STT */
+.cell-index {
+  text-align: center;
+  color: var(--text-muted);
+  font-weight: 600;
+  font-size: 12px;
+}
+
+/* Badge trạng thái */
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 11.5px;
+  font-weight: 600;
+}
+
+.status-pill.online {
+  background: var(--color-online-bg);
+  color: var(--color-online);
+}
+
+.status-pill.offline {
+  background: var(--color-offline-bg);
+  color: var(--color-offline);
+}
+
+.status-pill .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+/* Tên thiết bị */
+.device-name-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.device-type-icon {
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: #F1F5F9;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.device-title-box {
+  display: flex;
+  flex-direction: column;
+}
+
+.primary-name {
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.sub-name {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+/* IP & MAC */
+.cell-ip {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  color: #0284C7;
+  white-space: nowrap;
+}
+
+.cell-mac {
+  font-family: var(--font-mono);
+  color: var(--text-main);
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.cell-vendor {
+  color: var(--text-main);
+}
+
+/* Cổng dịch vụ Open Ports */
+.ports-badge-container {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.port-tag {
+  background: #E0F2FE;
+  color: #0369A1;
+  border: 1px solid #BAE6FD;
+  padding: 1px 6px;
+  border-radius: 3px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  display: inline-block;
+}
+
+.cell-latency {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.latency-fast { color: var(--color-online); }
+.latency-normal { color: #D97706; }
+.latency-slow { color: #DC2626; }
+
+.cell-time {
+  color: var(--text-muted);
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+/* Nút sửa */
+.btn-action-edit {
+  background: #F1F5F9;
+  border: 1px solid var(--border-light);
+  color: var(--text-main);
+  padding: 4px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-action-edit:hover {
+  background: #E2E8F0;
+  color: var(--viettel-red);
+}
+
+.table-footer-info {
+  margin-top: 12px;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.table-loading-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 40px;
+  color: var(--text-sub);
+}
+
+.loading-spin {
+  width: 18px;
+  height: 18px;
+  border: 2px solid #E2E8F0;
+  border-top-color: var(--viettel-red);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+/* -------------------------------------------------------------------------
+   5. BĂNG THÔNG & THÔNG SỐ MÁY CHỦ (TAB 2)
+   ------------------------------------------------------------------------- */
+.grid-2-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+@media (max-width: 950px) {
+  .grid-2-col {
+    grid-template-columns: 1fr;
+  }
+}
+
+.chart-legend {
+  font-size: 12px;
+  color: var(--text-sub);
+}
+
+.legend-color {
+  display: inline-block;
+  width: 12px;
+  height: 4px;
+  border-radius: 2px;
+  vertical-align: middle;
+  margin-right: 4px;
+}
+
+.legend-color.download { background: #0284C7; }
+.legend-color.upload { background: #F59E0B; }
+
+.chart-container {
+  background: #F8FAFC;
+  border: 1px solid var(--border-light);
+  border-radius: 4px;
+  padding: 12px;
+  height: 220px;
+}
+
+#traffic-canvas {
+  width: 100%;
+  height: 100%;
+}
+
+.spec-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.spec-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border-light);
+  font-size: 13px;
+}
+
+.spec-name {
+  color: var(--text-sub);
+  font-weight: 500;
+  width: 45%;
+}
+
+.spec-value {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+/* -------------------------------------------------------------------------
+   6. NHẬT KÝ SỰ KIỆN (TAB 3)
+   ------------------------------------------------------------------------- */
+.events-scroll-container {
+  max-height: 450px;
+  overflow-y: auto;
+  border: 1px solid var(--border-light);
+  border-radius: 4px;
+  background: #F8FAFC;
+}
+
+.viettel-event-list {
+  list-style: none;
+}
+
+.viettel-event-list li {
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border-light);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+}
+
+.viettel-event-list li:last-child {
+  border-bottom: none;
+}
+
+.viettel-event-list .event-msg {
+  color: var(--text-main);
+}
+
+.viettel-event-list .event-time {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--text-muted);
+}
+
+.event-none {
+  text-align: center;
+  padding: 40px;
+  color: var(--text-muted);
+}
+
+/* -------------------------------------------------------------------------
+   7. FOOTER CHUẨN
+   ------------------------------------------------------------------------- */
+.viettel-footer {
+  background: #FFFFFF;
+  border-top: 1px solid var(--border-light);
+  padding: 16px 24px;
+  font-size: 12px;
+  color: var(--text-sub);
+}
+
+.footer-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+/* -------------------------------------------------------------------------
+   8. MODAL CỐ ĐỊNH (FIXED OVERLAY - KHÔNG BAO GIỜ BỊ RƠI XUỐNG ĐÁY)
+   ------------------------------------------------------------------------- */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(4px);
+  z-index: 99999;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.modal-window {
+  background: #FFFFFF;
+  border: 1px solid var(--border-dark);
+  border-radius: 6px;
+  width: 100%;
+  max-width: 500px;
+  box-shadow: var(--shadow-popup);
+  overflow: hidden;
+  animation: modal-pop 0.2s ease-out;
+}
+
+@keyframes modal-pop {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.modal-head {
+  background: var(--viettel-dark);
+  color: #FFFFFF;
+  padding: 12px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.modal-head h3 {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+}
+
+.btn-close {
+  background: none;
+  border: none;
+  color: #94A3B8;
+  font-size: 22px;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.btn-close:hover {
+  color: #FFFFFF;
+}
+
+.modal-body {
+  padding: 20px;
+}
+
+.form-row {
+  margin-bottom: 16px;
+}
+
+.form-row label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-main);
+  margin-bottom: 6px;
+}
+
+.req { color: var(--viettel-red); }
+
+.readonly-badge {
+  background: #F1F5F9;
+  border: 1px solid var(--border-light);
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  color: #0284C7;
+}
+
+.form-row input[type="text"] {
+  width: 100%;
+  padding: 9px 12px;
+  border: 1px solid var(--border-dark);
+  border-radius: 4px;
+  font-size: 13.5px;
+  outline: none;
+}
+
+.form-row input[type="text"]:focus {
+  border-color: #0284C7;
+  box-shadow: 0 0 0 2px rgba(2, 132, 199, 0.15);
+}
+
+.help-text {
+  font-size: 11.5px;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+.type-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 6px;
+}
+
+.type-btn {
+  background: #F8FAFC;
+  border: 1px solid var(--border-light);
+  padding: 7px 10px;
+  border-radius: 4px;
+  font-size: 12.5px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.type-btn:hover {
+  background: #E2E8F0;
+}
+
+.type-btn.active {
+  background: #EFF6FF;
+  border-color: #0284C7;
+  color: #0284C7;
+  font-weight: 700;
+}
+
+.modal-foot {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border-light);
+}
+
+.btn-cancel {
+  background: #F1F5F9;
+  border: 1px solid var(--border-light);
+  color: var(--text-main);
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.btn-save {
+  background: var(--viettel-red);
+  color: #FFFFFF;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 4px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.btn-save:hover {
+  background: var(--viettel-red-hover);
+}
+
+/* -------------------------------------------------------------------------
+   9. TOAST STACK
+   ------------------------------------------------------------------------- */
+.toast-stack {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 10px;
+  z-index: 10000;
+}
+
+/* ==========================================================================
+   10. SECURITY SOC & CONNECTIONS STYLES
+   ========================================================================== */
+.threat-stats {
+  display: flex;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.threat-badge {
+  padding: 5px 12px;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: white;
+}
+
+.threat-badge.info {
+  background-color: #007bff;
+}
+
+.threat-badge.warning {
+  background-color: #ff9800;
+}
+
+.threat-badge.critical {
+  background-color: #EE0033;
+}
+
+.threat-table tbody tr.threat-row-critical {
+  background-color: #ffe6e6;
+}
+
+.threat-table tbody tr.threat-row-warning {
+  background-color: #fff3e0;
+}
+
+.threat-table tbody tr.threat-row-info {
+  background-color: #e3f2fd;
+}
+
+.badge-protocol {
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: 3px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  background: #e2e8f0;
+  color: #334155;
+}
+
+.badge-protocol.tcp { background: #dbeafe; color: #1e40af; }
+.badge-protocol.udp { background: #fef3c7; color: #92400e; }
+.badge-protocol.icmp { background: #fce7f3; color: #9d174d; }
+.badge-protocol.arp { background: #d1fae5; color: #065f46; }
+
+.status-suspicious {
+  color: #EE0033;
+  font-weight: bold;
+}
+
+.toast-msg {
+  background: var(--viettel-dark);
+  color: #FFFFFF;
+  padding: 10px 16px;
+  border-radius: 4px;
+  font-size: 13px;
+  box-shadow: var(--shadow-popup);
+  border-left: 4px solid var(--viettel-red);
+}
+
+/* -------------------------------------------------------------------------
+   BẢO MẬT: NÚT ẨN/HIỆN IP & NÚT TEST CHỐNG CHỤP MÀN HÌNH
+   ------------------------------------------------------------------------- */
+.btn-viettel-privacy {
+  background: #0F172A;
+  color: #38BDF8;
+  border: 1px solid #0284C7;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+}
+
+.btn-viettel-privacy:hover {
+  background: #1E293B;
+  border-color: #38BDF8;
+  color: #E0F2FE;
+}
+
+.btn-viettel-privacy.active {
+  background: #DC2626;
+  color: #FFFFFF;
+  border-color: #EF4444;
+  box-shadow: 0 0 12px rgba(220, 38, 38, 0.4);
+}
+
+.btn-viettel-shield-test {
+  background: rgba(220, 38, 38, 0.08);
+  color: #DC2626;
+  border: 1px dashed #DC2626;
+  padding: 8px 14px;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 12.5px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+}
+
+.btn-viettel-shield-test:hover {
+  background: #DC2626;
+  color: #FFFFFF;
+}
+
+/* Hiệu ứng hiển thị IP bị ẩn (Masked IP) */
+.ip-masked {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  background: rgba(220, 38, 38, 0.08);
+  color: #DC2626;
+  padding: 2px 7px;
+  border-radius: 4px;
+  border: 1px dashed rgba(220, 38, 38, 0.35);
+  user-select: none;
+  cursor: pointer;
+  letter-spacing: 0.5px;
+  transition: all 0.2s ease;
+}
+
+.ip-masked:hover {
+  background: rgba(220, 38, 38, 0.16);
+  border-color: #DC2626;
+}
+
+.ip-plain {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  color: #0284C7;
+}
+
+/* Header indicator cho Anti-Capture */
+.security-shield-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.shield-dot-pulse {
+  color: #22C55E;
+  font-size: 14px;
+  animation: shieldPulse 1.8s infinite ease-in-out;
+}
+
+@keyframes shieldPulse {
+  0%, 100% { opacity: 1; transform: scale(1); text-shadow: 0 0 6px #22C55E; }
+  50% { opacity: 0.4; transform: scale(1.3); text-shadow: none; }
+}
+
+/* -------------------------------------------------------------------------
+   KHIÊN ĐỎ CẢNH BÁO CHỐNG CHỤP MÀN HÌNH (ANTI-SCREENSHOT RED WARNING SHIELD)
+/* Khiên che phủ toàn diện - ngăn chặn 100% nhìn xuyên thấu */
+body.shield-mode-active .portal-header,
+body.shield-mode-active .portal-nav,
+body.shield-mode-active .portal-main {
+  filter: blur(50px) brightness(0.1) !important;
+  opacity: 0.03 !important;
+  pointer-events: none !important;
+  user-select: none !important;
+  transition: filter 0.1s ease, opacity 0.1s ease;
+}
+
+.security-screenshot-shield {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 99999999;
+  background: #450A0A;
+  background: radial-gradient(circle at 50% 45%, #991B1B 0%, #881337 35%, #4C0519 70%, #1A0208 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  user-select: none;
+  box-shadow: inset 0 0 150px rgba(0, 0, 0, 0.95), inset 0 0 80px rgba(220, 38, 38, 0.8);
+  animation: shieldFadeIn 0.12s ease-out;
+}
+
+@keyframes shieldFadeIn {
+  from { opacity: 0; transform: scale(1.03); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.shield-hazard-stripe {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 16px;
+  background: repeating-linear-gradient(45deg, #000000 0, #000000 20px, #FACC15 20px, #FACC15 40px);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+  z-index: 1;
+}
+
+.shield-hazard-stripe.top { top: 0; }
+.shield-hazard-stripe.bottom { bottom: 0; }
+
+.shield-watermark-overlay {
+  position: absolute;
+  inset: -20%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  pointer-events: none;
+  transform: rotate(-15deg);
+  opacity: 0.12;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.watermark-line {
+  font-family: var(--font-mono);
+  font-size: 22px;
+  font-weight: 900;
+  color: #FFFFFF;
+  white-space: nowrap;
+  letter-spacing: 3px;
+}
+
+.shield-dialog-card {
+  position: relative;
+  z-index: 2;
+  background: rgba(15, 23, 42, 0.92);
+  border: 3px solid #EF4444;
+  border-radius: 12px;
+  padding: 36px 40px;
+  max-width: 740px;
+  width: 95%;
+  text-align: center;
+  box-shadow: 0 0 80px rgba(220, 38, 38, 0.6), 0 30px 60px rgba(0, 0, 0, 0.9);
+  animation: cardAlarmPulse 2s infinite ease-in-out;
+}
+
+@keyframes cardAlarmPulse {
+  0%, 100% { box-shadow: 0 0 60px rgba(220, 38, 38, 0.5), 0 30px 60px rgba(0, 0, 0, 0.9); }
+  50% { box-shadow: 0 0 100px rgba(239, 68, 68, 0.8), 0 30px 60px rgba(0, 0, 0, 0.9); }
+}
+
+.shield-alarm-beacon {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 16px auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.shield-alarm-emoji {
+  font-size: 54px;
+  position: relative;
+  z-index: 2;
+  animation: sirenVibrate 0.4s infinite alternate ease-in-out;
+}
+
+@keyframes sirenVibrate {
+  from { transform: scale(0.95) rotate(-6deg); }
+  to { transform: scale(1.05) rotate(6deg); }
+}
+
+.shield-beacon-wave {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px solid #EF4444;
+  opacity: 0.8;
+  animation: beaconExpand 1.5s infinite linear;
+}
+
+.shield-beacon-wave.wave-2 {
+  animation-delay: 0.75s;
+}
+
+@keyframes beaconExpand {
+  0% { transform: scale(0.6); opacity: 0.9; }
+  100% { transform: scale(2.2); opacity: 0; }
+}
+
+.shield-main-title {
+  font-size: 26px;
+  font-weight: 900;
+  color: #FFFFFF;
+  letter-spacing: 1px;
+  text-shadow: 0 0 20px rgba(239, 68, 68, 0.8);
+  margin-bottom: 8px;
+}
+
+.shield-violation-badge {
+  display: inline-block;
+  background: #DC2626;
+  color: #FFFFFF;
+  font-weight: 800;
+  font-size: 13.5px;
+  padding: 6px 18px;
+  border-radius: 20px;
+  letter-spacing: 0.6px;
+  margin-bottom: 16px;
+  border: 1px solid #FCA5A5;
+  box-shadow: 0 0 15px rgba(220, 38, 38, 0.6);
+}
+
+.shield-description {
+  font-size: 13.5px;
+  color: #CBD5E1;
+  line-height: 1.6;
+  margin-bottom: 22px;
+}
+
+.shield-meta-box {
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  border-radius: 8px;
+  padding: 16px 20px;
+  margin-bottom: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  text-align: left;
+}
+
+.meta-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.meta-name {
+  color: #94A3B8;
+  font-weight: 500;
+}
+
+.meta-status-active {
+  color: #F87171;
+  font-weight: 800;
+  font-family: var(--font-mono);
+}
+
+.meta-status-secure {
+  color: #4ADE80;
+  font-weight: 800;
+  font-family: var(--font-mono);
+}
+
+.meta-value {
+  color: #F1F5F9;
+  font-family: var(--font-mono);
+  font-weight: 600;
+}
+
+.shield-btn-group {
+  margin-bottom: 16px;
+}
+
+.btn-unlock-shield {
+  background: linear-gradient(135deg, #DC2626 0%, #991B1B 100%);
+  color: #FFFFFF;
+  border: 1px solid #F87171;
+  padding: 12px 30px;
+  border-radius: 6px;
+  font-size: 14.5px;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 20px rgba(220, 38, 38, 0.5);
+}
+
+.btn-unlock-shield:hover {
+  background: linear-gradient(135deg, #EF4444 0%, #B91C1C 100%);
+  box-shadow: 0 6px 25px rgba(239, 68, 68, 0.7);
+  transform: translateY(-1px);
+}
+
+.shield-footer-tag {
+  font-size: 11px;
+  color: #64748B;
+  letter-spacing: 1px;
+  font-family: var(--font-mono);
+}
+
+/* -------------------------------------------------------------------------
+   NÂNG CẤP V1.3: OS BADGES, WI-FI/ETHERNET, ISP OPT-IN, LAB MODE & MAC MASK
+   ------------------------------------------------------------------------- */
+
+/* MAC Masked */
+.mac-masked {
+  font-family: var(--font-mono);
+  background: rgba(220, 38, 38, 0.08);
+  color: #B91C1C;
+  border: 1px dashed rgba(220, 38, 38, 0.4);
+  padding: 2px 6px;
+  border-radius: 4px;
+  letter-spacing: 0.8px;
+  font-size: 12px;
+}
+
+/* OS Badge trong bảng thiết bị */
+.os-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: 12px;
+  background: #F1F5F9;
+  color: #475569;
+  border: 1px solid #E2E8F0;
+  white-space: nowrap;
+}
+
+.os-badge.windows { background: #EFF6FF; color: #1D4ED8; border-color: #BFDBFE; }
+.os-badge.linux { background: #FEF3C7; color: #B45309; border-color: #FDE68A; }
+.os-badge.apple { background: #F3E8FF; color: #7E22CE; border-color: #E9D5FF; }
+.os-badge.android { background: #ECFDF5; color: #047857; border-color: #A7F3D0; }
+.os-badge.router { background: #EEF2FF; color: #4338CA; border-color: #C7D2FE; }
+.os-badge.camera { background: #FFF1F2; color: #BE123C; border-color: #FECDD3; }
+.os-badge.tv { background: #FFFBEB; color: #D97706; border-color: #FDE68A; }
+.os-badge.iot { background: #F0FDF4; color: #15803D; border-color: #BBF7D0; }
+
+/* Dịch vụ (Service) trong bảng Connections */
+.badge-service {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: #E0F2FE;
+  color: #0369A1;
+  border: 1px solid #BAE6FD;
+}
+
+/* Adapter Wi-Fi / Ethernet */
+.badge-adapter-type {
+  font-size: 11.5px;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 12px;
+  background: var(--viettel-red);
+  color: #FFFFFF;
+}
+
+.badge-adapter-type.wifi {
+  background: #0284C7;
+}
+
+.wifi-signal-meter {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #F1F5F9;
+  border-radius: 10px;
+  padding: 2px 8px;
+  border: 1px solid #E2E8F0;
+  width: fit-content;
+}
+
+.wifi-signal-fill {
+  height: 8px;
+  background: linear-gradient(90deg, #EAB308, #22C55E);
+  border-radius: 4px;
+  transition: width 0.3s ease;
+  min-width: 4px;
+  max-width: 60px;
+}
+
+/* ISP Opt-In Box */
+.isp-consent-container {
+  text-align: center;
+  padding: 24px 16px;
+  background: #F8FAFC;
+  border: 1px dashed #CBD5E1;
+  border-radius: 6px;
+}
+
+.consent-icon {
+  font-size: 32px;
+  margin-bottom: 8px;
+}
+
+.consent-text {
+  font-size: 13px;
+  color: var(--text-sub);
+  line-height: 1.5;
+  margin-bottom: 16px;
+  max-width: 480px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.btn-viettel-isp-lookup {
+  background: var(--viettel-red);
+  color: #FFFFFF;
+  border: none;
+  padding: 9px 20px;
+  font-weight: 700;
+  font-size: 13.5px;
+  border-radius: 4px;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(238, 0, 51, 0.25);
+  transition: all 0.2s ease;
+}
+
+.btn-viettel-isp-lookup:hover {
+  background: #D4002D;
+  transform: translateY(-1px);
+}
+
+.btn-viettel-refresh-isp {
+  background: #F1F5F9;
+  border: 1px solid #CBD5E1;
+  color: var(--text-main);
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-viettel-refresh-isp:hover {
+  background: #E2E8F0;
+}
+
+.privacy-lock-badge {
+  font-size: 11px;
+  font-weight: 600;
+  background: #FEF2F2;
+  color: #DC2626;
+  border: 1px solid #FECACA;
+  padding: 3px 8px;
+  border-radius: 12px;
+}
+
+/* -------------------------------------------------------------------------
+   SECURITY LAB MODE STYLES
+   ------------------------------------------------------------------------- */
+.lab-global-status {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.lab-tag-safe {
+  font-size: 12px;
+  font-weight: 700;
+  background: #DCFCE7;
+  color: #15803D;
+  border: 1px solid #86EFAC;
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+
+.lab-instruction-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: #F0FDF4;
+  border: 1px solid #BBF7D0;
+  border-radius: 6px;
+  padding: 12px 16px;
+  margin-bottom: 24px;
+  font-size: 13.5px;
+  color: #166534;
+  line-height: 1.5;
+}
+
+.security-lab-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.lab-card {
+  background: #FFFFFF;
+  border: 1px solid var(--border-light);
+  border-radius: 6px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+  overflow: hidden;
+  transition: all 0.2s ease;
+}
+
+.lab-card:hover {
+  border-color: #CBD5E1;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.lab-card-header {
+  padding: 16px 20px;
+  background: #F8FAFC;
+  border-bottom: 1px solid var(--border-light);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.lab-title-group h3 {
+  font-size: 15.5px;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 4px;
+}
+
+.lab-target-text {
+  font-size: 12px;
+  color: var(--text-sub);
+  font-family: var(--font-mono);
+}
+
+.lab-badges-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.lab-level-badge {
+  font-size: 11.5px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 12px;
+  background: #E0E7FF;
+  color: #3730A3;
+  border: 1px solid #C7D2FE;
+}
+
+.lab-card-body {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.lab-section-block {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.lab-sec-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.lab-sec-header.vuln { color: #DC2626; }
+.lab-sec-header.attack { color: #EA580C; }
+.lab-sec-header.detect { color: #0284C7; }
+.lab-sec-header.mitigate { color: #16A34A; }
+.lab-sec-header.impl { color: #4F46E5; }
+
+.lab-sec-desc {
+  font-size: 13px;
+  color: #334155;
+  line-height: 1.6;
+  padding-left: 22px;
+  white-space: pre-line;
+}
+
+.lab-code-box {
+  background: #0F172A;
+  color: #F8FAFC;
+  padding: 12px 16px;
+  border-radius: 6px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.5;
+  overflow-x: auto;
+  margin-left: 22px;
+  border: 1px solid #1E293B;
+}
+
+.lab-action-bar {
+  padding: 14px 20px;
+  background: #F8FAFC;
+  border-top: 1px solid var(--border-light);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.btn-simulate-lab {
+  background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
+  color: #FFFFFF;
+  border: 1px solid #334155;
+  padding: 8px 18px;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+}
+
+.btn-simulate-lab:hover {
+  background: linear-gradient(135deg, #334155 0%, #1E293B 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.btn-simulate-lab.running {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.lab-sim-feedback {
+  font-size: 12.5px;
+  font-family: var(--font-mono);
+  color: #15803D;
+  background: #DCFCE7;
+  border: 1px solid #86EFAC;
+  padding: 4px 10px;
+  border-radius: 4px;
+}
+
+/* -------------------------------------------------------------------------
+   CHỐNG IN ẤN / XUẤT ẢNH (PRINT & PDF MEDIA HARDENING)
+   ------------------------------------------------------------------------- */
+@media print {
+  body * {
+    display: none !important;
+  }
+  html, body {
+    background: #DC2626 !important;
+    height: 100% !important;
+  }
+  body::before {
+    content: "🚨 CẢNH BÁO AN NINH MẠNG: TÀI LIỆU NÀY ĐÃ ĐƯỢC BẢO VỆ CHỐNG IN ẤN VÀ CHỤP MÀN HÌNH! TOÀN BỘ THÔNG TIN THIẾT BỊ VÀ ĐỊA CHỈ IP MẠNG NỘI BỘ ĐÃ BỊ CHE KHUẤT." !important;
+    display: block !important;
+    background: #DC2626 !important;
+    color: #FFFFFF !important;
+    font-size: 24px !important;
+    font-weight: 900 !important;
+    text-align: center !important;
+    padding: 150px 30px !important;
+    line-height: 1.8 !important;
+  }
+}

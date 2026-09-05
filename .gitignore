@@ -1,0 +1,61 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.dll
+*.dylib
+*.pyd
+
+# Environments & Dependencies
+venv/
+env/
+ENV/
+.env
+.venv/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Database & Storage
+data/*.db
+data/*.db-wal
+data/*.db-shm
+data/*.sqlite
+data/*.sqlite3
+!data/.gitkeep
+
+# Logs
+logs/*.log
+!logs/.gitkeep
+
+# C/C++ Build Artifacts
+backend/c_modules/*.dll
+backend/c_modules/*.so
+backend/c_modules/*.dylib
+backend/c_modules/*.o
+backend/c_modules/*.obj
+backend/c_modules/*.exp
+backend/c_modules/*.lib
+
+# IDE & Editor Files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
