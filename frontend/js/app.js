@@ -1,5 +1,5 @@
 /* =========================================================================
-   Giao diện Quản Trị Cổng Mạng LAN - Chuẩn phong cách Viettel Home Gateway
+   Giao diện Quản Lý Cổng Mạng LAN - Chuẩn phong cách Viettel Home Gateway
    Pure Vanilla JavaScript - Không dùng framework nặng, hỗ trợ WebSocket realtime
    ========================================================================= */
 
@@ -32,6 +32,7 @@
     topWsStatus: document.getElementById("top-ws-status"),
     systemClock: document.getElementById("system-clock"),
     gatewayModelText: document.getElementById("gateway-model-text"),
+    logoHome: document.getElementById("viettel-logo"),
     topShieldIndicator: document.getElementById("top-shield-indicator"),
     topShieldText: document.getElementById("top-shield-text"),
 
@@ -371,16 +372,25 @@
   // Tự động mở tab theo hash URL
   window.addEventListener("hashchange", () => {
     const hash = (window.location.hash || "").replace("#", "");
-    if (["devices", "traffic", "connections", "security", "lab", "events"].includes(hash)) {
+    if (["devices", "traffic", "connections", "security", "events"].includes(hash)) {
       switchTab(hash);
     }
   });
 
   if (window.location.hash) {
     const initialTab = window.location.hash.replace("#", "");
-    if (["devices", "traffic", "connections", "security", "lab", "events"].includes(initialTab)) {
+    if (["devices", "traffic", "connections", "security", "events"].includes(initialTab)) {
       switchTab(initialTab);
     }
+  }
+
+  // Bấm logo NETWORK MANAGER -> tự động quay về trang chủ (Tab Danh sách thiết bị)
+  if (el.logoHome) {
+    el.logoHome.addEventListener("click", () => {
+      window.location.hash = "devices";
+      switchTab("devices");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
   }
 
   // -------------------------------------------------------------------------

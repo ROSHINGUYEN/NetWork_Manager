@@ -2,7 +2,7 @@
 
 # 🌐 NETWORK MANAGER
 
-### HỆ THỐNG QUẢN lÝ MẠNG LAN
+### HỆ THỐNG QUẢN LÝ MẠNG LAN
 **Real-time LAN Device Management & Security Monitoring Dashboard**
 
 ![Python](https://img.shields.io/badge/Python-3.11%2B-3776AB?logo=python&logoColor=white)
@@ -15,7 +15,7 @@
 ![Mục đích](https://img.shields.io/badge/M%E1%BB%A5c%20%C4%91%C3%ADch-Gi%C3%A1o%20d%E1%BB%A5c%20%26%20SOC-2EA043)
 ![License](https://img.shields.io/badge/License-MIT-8A2BE2?logo=openaccessinitiative&logoColor=white)
 
-📸 **Ảnh demo — Trang quản trị thiết bị mạng (IP/MAC được Privacy Mode tự động che):**
+📸 **Ảnh demo — Trang quản lý thiết bị mạng (IP/MAC được Privacy Mode tự động che):**
 
 ![Demo — Danh sách thiết bị kết nối (LAN Clients)](docs/images/dashboard-lan-clients.png)
 
@@ -32,13 +32,14 @@
 | Vị trí trên giao diện | Giá trị thực tế |
 | :--- | :--- |
 | 🏷️ Logo góc trái header (nền đỏ Viettel) | **NETWORK MANAGER** |
-| 📄 Tiêu đề tab trình duyệt (`<title>`) | **Hệ Thống Quản Trị Mạng LAN** |
-| 🖥️ Tiêu đề lớn bên phải logo (`h1`) | **TRANG QUẢN TRỊ THIẾT BỊ MẠNG** |
+| 📄 Tiêu đề tab trình duyệt (`<title>`) | **Hệ Thống Quản Lý Mạng LAN** |
+| 🖥️ Tiêu đề lớn bên phải logo (`h1`) | **TRANG QUẢN LÝ THIẾT BỊ MẠNG** |
 | 📡 Dòng mô tả dưới tiêu đề | `Modem GPON Gateway • Dải mạng LAN ***.***.***.*** /24` |
 | 🟢 Badge trạng thái trên header | `Internet: ● Đang kết nối` • `Privacy: AUTO ẨN IP` • Đồng hồ hệ thống |
 | 🗂️ 5 tab điều hành | Danh sách thiết bị • Lưu lượng & Băng thông • Kết nối & Gói tin • An ninh SOC • Nhật ký |
 | 🌍 Ngôn ngữ giao diện | **Tiếng Việt** (`<html lang="vi">`) |
-| 🎨 Phong cách thiết kế | Dark header + điểm nhấn đỏ theo chuẩn cổng quản trị Viettel (màu `#EE0033`) |
+| 🎨 Phong cách thiết kế | Dark header + điểm nhấn đỏ theo chuẩn cổng quản lý Viettel (màu `#EE0033`) |
+| 🖱️ Điều hướng nhanh | Bấm logo **NETWORK MANAGER** để quay về trang chủ (Tab Danh sách thiết bị) |
 | 📦 Kho mã nguồn | [ROSHINGUYEN/NetWork_Manager](https://github.com/ROSHINGUYEN/NetWork_Manager) |
 
 ### 🌏 Ngôn Ngữ Hệ Thống
@@ -149,13 +150,7 @@
 | Bắt gói tin | Cài **[Npcap](https://npcap.com/#download)** (Windows) / `libpcap` (Linux) |
 | Trình duyệt | Chrome / Edge / Firefox bản mới nhất |
 
-### 🚀 Cách 1: Windows (Khuyên dùng)
-Nhấp đúp chuột vào file:
-```bat
-start.bat
-```
-
-### 🚀 Cách 2: Terminal
+### 🚀 Khởi động qua Terminal (Khuyên dùng kèm quyền Administrator)
 ```bash
 python run.py
 ```
@@ -164,7 +159,7 @@ python run.py
 1. Kiểm tra & **tự cài thư viện còn thiếu** (`fastapi`, `uvicorn`, `psutil`, `scapy`...).
 2. **Tự tránh xung đột cổng**: nếu cổng 8000 bận, tự chuyển sang 8001, 8002... (không bao giờ lỗi `[Errno 10048]`).
 3. Tự mở trình duyệt:
-   - 🖥️ **Trang Quản Trị Mạng LAN**: `http://localhost:8000`
+   - 🖥️ **Trang Quản Lý Mạng LAN**: `http://localhost:8000`
    - 📚 **Swagger API Docs**: `http://localhost:8000/docs`
 4. 🛑 **Tắt ứng dụng**: nhấn `Ctrl + C` — toàn bộ dữ liệu RAM được xóa sạch ngay lập tức.
 
@@ -246,6 +241,6 @@ Dự án được phát hành theo giấy phép **MIT** — xem toàn văn tại
 
 <div align="center">
 
-**NETWORK MANAGER** — Hệ Thống Quản Trị Mạng LAN 🇻🇳
+**NETWORK MANAGER** — Hệ Thống Quản Lý Mạng LAN 🇻🇳
 
 </div>

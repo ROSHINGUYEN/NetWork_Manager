@@ -1,5 +1,5 @@
 /* =========================================================================
-   Giao diện Quản Trị Cổng Mạng LAN - Chuẩn phong cách Viettel Home Gateway
+   Giao diện Quản Lý Cổng Mạng LAN - Chuẩn phong cách Viettel Home Gateway
    Thiết kế giao diện rõ ràng, phân tab chuyên nghiệp, đường nét kẻ ô chuẩn mực
    ========================================================================= */
 
@@ -80,6 +80,14 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
+  user-select: none;
+  transition: filter 0.2s ease, transform 0.2s ease;
+}
+
+.viettel-logo:hover {
+  filter: brightness(1.15);
+  transform: translateY(-1px);
 }
 
 .logo-txt {

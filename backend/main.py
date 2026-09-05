@@ -68,7 +68,7 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(
     title="Network Security Monitor",
-    description="Hệ Thống Quản Trị Mạng LAN: giám sát thiết bị, bóc tách gói tin và SOC Alert thời gian thực trong RAM.",
+    description="Hệ Thống Quản Lý Mạng LAN: giám sát thiết bị, bóc tách gói tin và SOC Alert thời gian thực trong RAM.",
     version="1.3.0",
     lifespan=lifespan,
 )
