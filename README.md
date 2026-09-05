@@ -17,7 +17,7 @@
 
 📸 **Ảnh demo — Trang quản lý thiết bị mạng (IP/MAC được Privacy Mode tự động che):**
 
-![Demo — Danh sách thiết bị kết nối (LAN Clients)](docs/images/dashboard-lan-clients.png)
+![Demo — Danh sách thiết bị kết nối (LAN Clients)](docs\images\dashboard-lan-clients.png)
 
 *Giao diện mô phỏng chuẩn trang quản trị **Modem GPON Gateway** (phong cách Viettel Telecom).*
 
