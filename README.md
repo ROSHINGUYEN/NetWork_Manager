@@ -1,4 +1,4 @@
-# NETWORK MANAGER — Hệ Thống Quản Trị Mạng LAN (V1.3)
+# NETWORK MANAGER — Hệ Thống Quản Trị Mạng LAN
 
 > 🌐 **Real-time LAN Network Management & Security Monitoring Dashboard**  
 > 🇻🇳 **Ngôn ngữ giao diện: Tiếng Việt (vi)** — Thuật ngữ kỹ thuật hiển thị song ngữ Việt–Anh  
@@ -31,7 +31,7 @@ Hệ thống được tối ưu hóa đặc biệt theo tiêu chuẩn bảo mậ
 
 ---
 
-## 2. Danh Mục Chức Năng V1.3 (Features)
+## 2. Danh Mục Chức Năng
 
 1. 🛡️ **Privacy Mode (Chế độ riêng tư toàn diện)**:
    - Che giấu địa chỉ IP (`***.***.***.***`), MAC (`••:••:••:••:••:••`), Gateway, Subnet và Public IP.
@@ -161,7 +161,7 @@ python run.py
 
 ---
 
-## 6. Danh Mục API Endpoints V1.3
+## 6. Danh Mục API Endpoints
 
 | Phương thức | Endpoint | Chức năng |
 | :---: | :--- | :--- |

@@ -1,17 +1,17 @@
-# GIÁO TRÌNH ĐÀO TẠO AN NINH MẠNG & GIÁM SÁT SOC (V1.3)
+# GIÁO TRÌNH ĐÀO TẠO AN NINH MẠNG & GIÁM SÁT SOC
 **Khung Đào Tạo Kỹ Sư Giám Sát An Toàn Thông Tin (Security Operations Center - SOC Tier 1/2)**  
-*Mã hệ thống: NSM-V1.3 | Nền tảng: Python + C Low-level + FastAPI + In-Memory RAM + WebSocket*
+*Mã hệ thống: NSM| Nền tảng: Python + C Low-level + FastAPI + In-Memory RAM + WebSocket*
 
 ---
 
 ## 📌 GIỚI THIỆU & MỤC TIÊU KHÓA HỌC
-Hệ thống **Network Security Monitor V1.3** được thiết kế như một phòng thí nghiệm thu nhỏ (Cyber Range Sandbox), cung cấp khả năng trực quan hóa các luồng dữ liệu mạng, bóc tách cấu trúc gói tin tầng thấp (L2 - L4) và mô phỏng các mối đe dọa an ninh mạng thường gặp trên hệ thống mạng nội bộ (LAN).
+Hệ thống **Network Security Monitor** được thiết kế như một phòng thí nghiệm thu nhỏ (Cyber Range Sandbox), cung cấp khả năng trực quan hóa các luồng dữ liệu mạng, bóc tách cấu trúc gói tin tầng thấp (L2 - L4) và mô phỏng các mối đe dọa an ninh mạng thường gặp trên hệ thống mạng nội bộ (LAN).
 
-Khác biệt với các công cụ ghi log truyền thống, V1.3 áp dụng kiến trúc **Zero-Footprint In-Memory RAM**, toàn bộ trạng thái mạng, các phiên bắt gói và sự kiện an ninh chỉ tồn tại trên RAM trong phiên làm việc, tự động giải phóng sạch khi ứng dụng kết thúc.
+Khác biệt với các công cụ ghi log truyền thống,áp dụng kiến trúc **Zero-Footprint In-Memory RAM**, toàn bộ trạng thái mạng, các phiên bắt gói và sự kiện an ninh chỉ tồn tại trên RAM trong phiên làm việc, tự động giải phóng sạch khi ứng dụng kết thúc.
 
 ---
 
-## 📐 KIẾN TRÚC HỆ THỐNG V1.3
+## 📐 KIẾN TRÚC HỆ THỐNG
 1. **Lớp Thu Thập & Bóc Tách Cấp Thấp (C Low-Level Module)**:
    - Sử dụng ngôn ngữ C thuần túy để giải mã trực tiếp các struct nhị phân của Ethernet Header (`struct eth_header`), IPv4 Header (`struct ip_header`), TCP Header (`struct tcp_header`), UDP Header (`struct udp_header`).
    - Tối ưu hóa tính toán checksum và giải mã cờ TCP (SYN, ACK, FIN, RST, PSH, URG).

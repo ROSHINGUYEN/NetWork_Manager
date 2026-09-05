@@ -85,7 +85,7 @@
     hostMac: document.getElementById("host-mac"),
     hostUptime: document.getElementById("host-uptime"),
 
-    // Tab 2 V1.3: Adapter Wi-Fi & Ethernet
+    // Tab 2 : Adapter Wi-Fi & Ethernet
     adapterBadgeType: document.getElementById("adapter-badge-type"),
     adapterName: document.getElementById("adapter-name"),
     wifiRowSsid: document.getElementById("wifi-row-ssid"),
@@ -100,7 +100,7 @@
     adapterSpeed: document.getElementById("adapter-speed"),
     adapterDuplexMtu: document.getElementById("adapter-duplex-mtu"),
 
-    // Tab 2 V1.3: Tra cứu ISP & Public IP (Opt-In)
+    // Tab 2: Tra cứu ISP & Public IP (Opt-In)
     ispConsentBox: document.getElementById("isp-consent-box"),
     btnLookupIsp: document.getElementById("btn-lookup-isp"),
     ispResultsBox: document.getElementById("isp-results-box"),

@@ -43,7 +43,7 @@ FRONTEND_DIR = BASE_DIR / "frontend"
 async def lifespan(app: FastAPI):
     """Khởi tạo bộ nhớ RAM tạm thời + bắt đầu các tác vụ nền khi ứng dụng start, dọn dẹp khi shutdown."""
     logger.info("=" * 60)
-    logger.info("Đang khởi động Network Monitor V1.3 (Bộ nhớ tạm RAM - Tắt là quên sạch) ...")
+    logger.info("Đang khởi động Network Monitor (Bộ nhớ tạm RAM - Tắt là quên sạch) ...")
     logger.info("=" * 60)
 
     store = MemoryStore()
@@ -68,7 +68,7 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(
-    title="Network Security Monitor V1.3",
+    title="Network Security Monitor",
     description="Giám sát an ninh mạng LAN, bóc tách gói tin, SOC Alert và Security Lab Mode trong RAM.",
     version="1.3.0",
     lifespan=lifespan,

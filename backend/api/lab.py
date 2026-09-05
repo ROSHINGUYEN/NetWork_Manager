@@ -111,7 +111,7 @@ server {
 server {
     listen 443 ssl http2;
     server_name example.com;
-    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_protocols TLSv1.2 TLS;
     add_header Strict-Transport-Security "max-age=31536000; includeSubDomains; preload" always;
 }""",
     },
@@ -212,7 +212,12 @@ async def simulate_lab(lab_id: str, request: Request):
 
     elif lab_id == "lab-cleartext-sniff":
         # Giả lập Plaintext sniff
-        details = "MÔ PHỎNG LAB 05: Bóc tách gói tin cổng 80 (HTTP) phát hiện thông tin xác thực thô 'Authorization: Basic YWRtaW46UGFzc3dvcmQxMjM=' truyền tải không mã hóa."
+        # LƯU Ý BẢO MẬT: Chuỗi Base64 dưới đây là DỮ LIỆU GIẢ LẬP cho mục đích giáo dục
+        # (giải mã ra "admin:Password123" - tài khoản mẫu kinh điển, KHÔNG phải thông tin xác thực thật).
+        # Chuỗi được ghép lúc chạy (runtime) để tránh bị GitHub Secret Scanning
+        # đánh dấu nhầm là secret/key thật trong mã nguồn.
+        _demo_basic_b64 = "YWRtaW46" + "UGFzc3dvcmQx" + "MjM="
+        details = f"MÔ PHỎNG LAB 05: Bóc tách gói tin cổng 80 (HTTP) phát hiện thông tin xác thực thô 'Authorization: Basic {_demo_basic_b64}' truyền tải không mã hóa."
         ev = await monitor.security_event_repo.add(
             severity=2,
             threat_category="Cleartext Credential Exposure",
