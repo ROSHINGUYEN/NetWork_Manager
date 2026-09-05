@@ -23,7 +23,7 @@ Khác biệt với các công cụ ghi log truyền thống,áp dụng kiến tr
 3. **Lớp Trình Diễn & Phòng Vệ (Frontend & Defensive Layer)**:
    - Truyền tải thời gian thực bằng WebSocket hai chiều.
    - **Privacy Mode**: Che giấu địa chỉ IP (`***.***.***.***`), MAC (`••:••:••:••:••:••`), Gateway, Subnet và Public IP khi chia sẻ màn hình.
-   - **Anti-Screenshot Red Shield**: Chặn phím tắt chụp màn hình (PrtScn, Win+Shift+S, Cmd+Shift+3/4, Ctrl+P) bằng lớp khiên đỏ cảnh báo và làm sạch clipboard.
+   - **Auto Privacy Mask (Tự động ẩn IP)**: Ngay khi cửa sổ mất tiêu điểm (chụp màn hình `Win+Shift+S`/`PrtScn`, chia sẻ màn hình, chuyển tab/ứng dụng), toàn bộ IP/MAC/Gateway tự động bị che thành `***.***.***.***` trước khi bất kỳ ảnh chụp nào kịp thu được hình ảnh.
 
 ---
 
@@ -166,4 +166,4 @@ Khác biệt với các công cụ ghi log truyền thống,áp dụng kiến tr
    - Che giấu toàn bộ địa chỉ MAC (`••:••:••:••:••:••`) để tránh định danh chính xác thiết bị cá nhân.
 2. **Kích Hoạt Chế Độ Bảo Mật Trên Network Monitor**:
    - Chế độ Privacy Mode được **bật mặc định ngay khi mở ứng dụng** để bảo vệ tức thì. Nhấp vào nút **"🔒 Hiện IP mạng"** trên thanh công cụ nếu bạn muốn xem bản rõ.
-   - Trong quá trình trình chiếu, nếu có thao tác chụp ảnh màn hình vô tình kích hoạt, hệ thống sẽ dựng khiên đỏ bảo vệ để ngăn rò rỉ dữ liệu.
+   - Trong quá trình trình chiếu hoặc khi bị chụp màn hình / chia sẻ màn hình, hệ thống **tự động kích hoạt Privacy Mode** che toàn bộ địa chỉ IP — mọi ảnh chụp, ảnh quay và màn hình chia sẻ chỉ hiển thị IP dạng `***.***.***.***`, vô dụng với kẻ thu thập thông tin.

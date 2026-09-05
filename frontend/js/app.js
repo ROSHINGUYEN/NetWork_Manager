@@ -24,9 +24,6 @@
     editingMac: null,
     editingType: "other",
     isIpMasked: true,
-    isShieldActive: false,
-    shieldCountdownTimer: null,
-    shieldSecondsLeft: 3,
   };
 
   // Cache các phần tử DOM
@@ -67,7 +64,6 @@
     btnToggleIpMask: document.getElementById("btn-toggle-ip-mask"),
     ipMaskIcon: document.getElementById("ip-mask-icon"),
     ipMaskLabel: document.getElementById("ip-mask-label"),
-    btnTestShield: document.getElementById("btn-test-shield"),
     filterPills: Array.from(document.querySelectorAll(".pill-btn")),
     countAll: document.getElementById("count-all"),
     countOnline: document.getElementById("count-online"),
@@ -137,13 +133,6 @@
 
     // Tab 6: Security Lab Mode
     securityLabList: document.getElementById("security-lab-list"),
-
-    // Khiên Đỏ Cảnh Báo Chống Chụp Màn Hình (Anti-Screenshot Red Shield)
-    securityScreenshotShield: document.getElementById("security-screenshot-shield"),
-    shieldDetectedTime: document.getElementById("shield-detected-time"),
-    shieldDetectedReason: document.getElementById("shield-detected-reason"),
-    btnUnlockShield: document.getElementById("btn-unlock-shield"),
-    shieldCountdown: document.getElementById("shield-countdown"),
 
     // Toast Container
     toastContainer: document.getElementById("toast-container"),
@@ -1033,168 +1022,60 @@
   }
 
   // -------------------------------------------------------------------------
-  // PHÒNG VỆ CHỐNG CHỤP MÀN HÌNH (ANTI-SCREENSHOT RED SHIELD DEFENSE)
+  // PRIVACY TỰ ĐỘNG KHI MẤT TIÊU ĐIỂM (AUTO PRIVACY MASK ON FOCUS-LOSS)
   // -------------------------------------------------------------------------
+  // Giới hạn nền tảng cần biết rõ:
+  //  - Trình duyệt KHÔNG THỂ chặn ảnh chụp ở cấp hệ điều hành: khi bấm PrtScn,
+  //    HĐH đã ghi ảnh vào clipboard TRƯỚC khi trang web nhận được sự kiện phím.
+  //  - Phím Win (Win + Shift + S) không bao giờ tới được trang web vì bị HĐH chặn.
+  // => Phòng vệ thực chiến duy nhất: NGAY KHI cửa sổ MẤT TIÊU ĐIỂM (bật Snipping
+  //    Tool, trình quay màn hình, chuyển tab/ứng dụng, bật chia sẻ màn hình),
+  //    hệ thống TỰ ĐỘNG ẨN toàn bộ IP/MAC. Mọi ảnh chụp / màn hình chia sẻ từ
+  //    đó về sau chỉ hiển thị địa chỉ dạng ***.***.***.*** — vô dụng với kẻ
+  //    thu thập thông tin.
 
-  function triggerScreenshotProtection(reason = "Phát hiện thao tác chụp màn hình (PrtScn / Snipping Tool)") {
-    if (state.isShieldActive) return;
-    state.isShieldActive = true;
+  let blurMaskTimer = null;
 
-    // Ghi nhận thời gian và lý do kích hoạt
-    const nowStr = new Date().toLocaleTimeString("vi-VN", { hour12: false });
-    if (el.shieldDetectedTime) el.shieldDetectedTime.textContent = nowStr;
-    if (el.shieldDetectedReason) el.shieldDetectedReason.textContent = reason;
+  function autoMaskIpForCapture(reason) {
+    if (!state.isIpMasked) {
+      state.isIpMasked = true;
+      if (el.btnToggleIpMask) el.btnToggleIpMask.classList.add("is-masked");
+      if (el.ipMaskIcon) el.ipMaskIcon.textContent = "🔒";
+      if (el.ipMaskLabel) el.ipMaskLabel.textContent = "Hiện IP mạng";
 
-    // Bật khiên toàn màn hình với nền đỏ cảnh báo và làm mờ hoàn toàn giao diện nền
-    document.body.classList.add("shield-mode-active");
-    if (el.securityScreenshotShield) {
-      el.securityScreenshotShield.style.display = "flex";
-      el.securityScreenshotShield.classList.add("active");
+      // Vẽ lại toàn bộ giao diện với dữ liệu đã được che giấu
+      renderOverviewCards();
+      renderDeviceTable();
+      renderConnections();
+      renderSecurityEvents();
+
+      showToast(`🔒 ${reason} — Đã TỰ ĐỘNG ẨN toàn bộ IP mạng (Privacy Mode).`, "info");
     }
-
-    // Ghi lại sự kiện an ninh vào bộ nhớ RAM SOC
-    const securityEvent = {
-      created_at: new Date().toISOString(),
-      severity: 3,
-      threat_category: "Screen Capture Blocked",
-      src_ip: "Local Console",
-      details: `Kích hoạt khiên cảnh báo đỏ chống chụp màn hình. Lý do: ${reason}. Đã cô lập và che phủ toàn bộ dữ liệu mạng.`
-    };
-    state.securityEvents.unshift(securityEvent);
-    if (state.securityEvents.length > 100) state.securityEvents.pop();
-    renderSecurityEvents();
-
-    // Làm sạch clipboard để nếu người dùng chụp qua clipboard thì không thu được dữ liệu
-    try {
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText("[CẢNH BÁO AN NINH MẠNG] Hành vi chụp màn hình hoặc sao chép thông tin mạng đã bị chặn bởi NETWORK MANAGER - Hệ Thống Quản Trị Mạng LAN.");
-      }
-    } catch (e) {
-      // Bỏ qua nếu trình duyệt không cấp quyền truy cập clipboard
-    }
-
-    // Đếm ngược 3 giây trước khi người dùng được phép mở khóa
-    state.shieldSecondsLeft = 3;
-    if (el.btnUnlockShield) {
-      el.btnUnlockShield.disabled = true;
-      el.btnUnlockShield.style.opacity = "0.7";
-      el.btnUnlockShield.style.cursor = "not-allowed";
-      el.btnUnlockShield.innerHTML = `🛡️ Tôi Đã Hiểu &bull; Mở Khóa Màn Hình (<span id="shield-countdown">${state.shieldSecondsLeft}</span>s)`;
-      el.shieldCountdown = document.getElementById("shield-countdown");
-    }
-
-    clearInterval(state.shieldCountdownTimer);
-    state.shieldCountdownTimer = setInterval(() => {
-      state.shieldSecondsLeft--;
-      if (state.shieldSecondsLeft <= 0) {
-        clearInterval(state.shieldCountdownTimer);
-        state.shieldCountdownTimer = null;
-        if (el.btnUnlockShield) {
-          el.btnUnlockShield.disabled = false;
-          el.btnUnlockShield.style.opacity = "1";
-          el.btnUnlockShield.style.cursor = "pointer";
-          el.btnUnlockShield.innerHTML = "🛡️ Tôi Đã Hiểu &bull; Mở Khóa Màn Hình (Sẵn sàng)";
-        }
-      } else {
-        if (el.shieldCountdown) el.shieldCountdown.textContent = state.shieldSecondsLeft;
-      }
-    }, 1000);
+    if (el.topShieldText) el.topShieldText.textContent = "AUTO ẨN IP • ON";
   }
 
-  function unlockScreenshotProtection() {
-    state.isShieldActive = false;
-    clearInterval(state.shieldCountdownTimer);
-    state.shieldCountdownTimer = null;
 
-    document.body.classList.remove("shield-mode-active");
-    if (el.securityScreenshotShield) {
-      el.securityScreenshotShield.style.display = "none";
-      el.securityScreenshotShield.classList.remove("active");
-    }
-
-    showToast("Đã mở khóa màn hình quản trị mạng an toàn.", "success");
-  }
-
-  // Nút mở khóa khiên
-  if (el.btnUnlockShield) {
-    el.btnUnlockShield.addEventListener("click", () => {
-      if (state.shieldSecondsLeft <= 0) {
-        unlockScreenshotProtection();
-      }
-    });
-  }
-
-  // Nút thử nghiệm khiên
-  if (el.btnTestShield) {
-    el.btnTestShield.addEventListener("click", () => {
-      triggerScreenshotProtection("Thử nghiệm kiểm tra khiên đỏ cảnh báo chống chụp màn hình (Security Test)");
-    });
-  }
-
-  // Bắt phím PrintScreen (PrtScn) & Phím tắt chụp màn hình
-  window.addEventListener("keyup", (e) => {
-    if (e.key === "PrintScreen" || e.keyCode === 44) {
-      triggerScreenshotProtection("Phát hiện phím PrintScreen (PrtScn) / Snipping Tool");
-    }
-  });
-
-  window.addEventListener("keydown", (e) => {
-    // PrintScreen
-    if (e.key === "PrintScreen" || e.keyCode === 44) {
-      triggerScreenshotProtection("Phát hiện phím PrintScreen (PrtScn)");
-      return;
-    }
-
-    // Windows Snipping Tool: Win + Shift + S hoặc Ctrl + Shift + S
-    if (e.shiftKey && (e.key === "S" || e.key === "s") && (e.metaKey || e.ctrlKey)) {
-      triggerScreenshotProtection("Phát hiện tổ hợp phím Snipping Tool (Win/Ctrl + Shift + S)");
-      return;
-    }
-
-    // Mac screenshot: Cmd + Shift + 3, Cmd + Shift + 4, Cmd + Shift + 5
-    if (e.metaKey && e.shiftKey && ["3", "4", "5"].includes(e.key)) {
-      triggerScreenshotProtection("Phát hiện phím tắt chụp màn hình MacOS (Cmd + Shift + 3/4/5)");
-      return;
-    }
-
-    // Ngăn phím Ctrl + P (In ấn / In ra PDF)
-    if ((e.ctrlKey || e.metaKey) && (e.key === "p" || e.key === "P")) {
-      e.preventDefault();
-      triggerScreenshotProtection("Phát hiện phím tắt In ấn / Xuất PDF (Ctrl + P)");
-      return;
-    }
-  });
-
-  // Chống in ấn / Xuất PDF
-  window.addEventListener("beforeprint", () => {
-    triggerScreenshotProtection("Phát hiện thao tác In ấn hoặc Xuất tệp PDF (Print Preview)");
-  });
-
-  // -------------------------------------------------------------------------
-  // PHÒNG VỆ CHÍNH CHỐNG SNIPPING TOOL / SCREEN RECORDER (FOCUS-LOSS DEFENSE)
-  // -----------------------------------------------------------------------
-  // Giới hạn nền tảng phải biết rõ:
-  //  - Phím Win (Win + Shift + S) KHÔNG BAO GIỜ tới được trang web vì Hệ điều hành chặn.
-  //  - Bấm PrtScn: HĐH chụp vào clipboard TRƯỚC khi trang web nhận sự kiện phím.
-  // => Cơ chế duy nhất hoạt động THỰC TẾ trên trình duyệt: phát hiện cửa sổ MẤT TIÊU ĐIỂM.
-  // Khi Snipping Tool mở (Win+Shift+S), màn hình mờ đi và trang web mất focus ngay lập tức.
-  // Trang phản ứng bằng cách phủ KHIÊN ĐỎ TRƯỚC khi người dùng kịp kéo vùng chọn,
-  // nên mọi ảnh chụp về sau chỉ thu được nền cảnh báo đỏ.
-  let blurTriggerTimer = null;
+  // AUTO PRIVACY: Tự động ẩn IP khi cửa sổ mất tiêu điểm (chụp màn hình / chia sẻ)
   window.addEventListener("blur", () => {
-    clearTimeout(blurTriggerTimer);
+    clearTimeout(blurMaskTimer);
     // Chờ một nhịp ngắn để bỏ qua trường hợp click ra ngoài rồi quay lại ngay lập tức
-    blurTriggerTimer = setTimeout(() => {
-      if (document.hasFocus()) return; // Đã lấy lại focus -> không phải chụp màn hình
-      if (!state.isShieldActive) {
-        triggerScreenshotProtection("Phát hiện cửa sổ mất tiêu điểm (Snipping Tool Win+Shift+S / Screen Recorder / Chuyển ứng dụng)");
-      }
-    }, 120);
+    blurMaskTimer = setTimeout(() => {
+      if (document.hasFocus()) return; // Đã lấy lại focus -> bỏ qua
+      autoMaskIpForCapture("Phát hiện mất tiêu điểm cửa sổ (chụp màn hình / chia sẻ màn hình)");
+    }, 100);
   });
+
   window.addEventListener("focus", () => {
-    clearTimeout(blurTriggerTimer);
-    // Khi quay lại cửa sổ mà khiên đang bật (do mất tiêu điểm trước đó),
-    // giữ nguyên khiên - người dùng phải chờ hết đếm ngược rồi bấm "Mở Khóa Màn Hình".
+    clearTimeout(blurMaskTimer);
+    // Giữ nguyên trạng thái ẩn IP khi quay lại cửa sổ.
+    // Người dùng tự bấm nút "Hiện IP mạng" nếu muốn xem bản rõ.
+  });
+
+  // Chuyển tab / thu nhỏ cửa sổ cũng được coi là rủi ro rò rỉ màn hình
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) {
+      autoMaskIpForCapture("Phát hiện chuyển tab / ẩn cửa sổ");
+    }
   });
 
   // -------------------------------------------------------------------------

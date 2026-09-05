@@ -57,12 +57,11 @@ Hệ thống được tối ưu hóa đặc biệt theo tiêu chuẩn bảo mậ
      5. **Bài 5**: C2 Outbound Beaconing & Data Exfiltration.
    - Mỗi bài lab đều có cấu trúc 5 bước hoàn chỉnh: **Lỗ hổng (Vulnerability) → Phương thức tấn công (Attack Concept) → Cơ chế phát hiện (SOC Detection) → Biện pháp phòng ngừa (Mitigation) → Mã nguồn cấu hình an toàn (Secure Implementation)**.
    - Đi kèm nút **"▶️ Chạy Mô Phỏng"** an toàn trên localhost để kiểm tra phản hồi của SOC.
-7. 🚨 **Khiên Đỏ Chống Chụp Màn Hình (Anti-Capture Red Shield)**:
-   - Nút trạng thái `Anti-Capture ON` nằm trên header, kèm nút **"🚨 Test Chống Chụp"** để kiểm tra nhanh.
-   - **Cơ chế 1 — Phát hiện phím tắt**: Bắt `PrtScn`, `Ctrl + Shift + S`, phím tắt chụp màn hình macOS (`Cmd + Shift + 3/4/5`) và thao tác in ấn / xuất PDF (`Ctrl + P`, sự kiện `beforeprint`).
-   - **Cơ chế 2 — Phát hiện mất tiêu điểm (Focus-Loss Defense) ✨**: Khi bạn bấm `Win + Shift + S` (Snipping Tool), hệ điều hành **không bao giờ** gửi phím `Win` đến trình duyệt — vì vậy hệ thống nhận diện qua sự kiện **mất focus cửa sổ**: ngay khi Snipping Tool / trình quay màn hình mở lên, khiên đỏ phủ kín trang **trước** khi người dùng kịp kéo vùng chọn → ảnh chụp chỉ thu được nền cảnh báo đỏ.
-   - Khi kích hoạt: phủ toàn màn hình bằng nền đỏ cảnh báo, **làm mờ 100%** header/menu/nội dung (blur 50px), khóa cuộn trang, ghi sự kiện vào nhật ký SOC, xóa clipboard và đếm ngược 3 giây trước khi cho phép bấm "Mở Khóa Màn Hình".
-   - ⚠️ **Giới hạn nền tảng (minh bạch kỹ thuật)**: Trình duyệt web không thể chặn tuyệt đối ảnh chụp ở cấp hệ điều hành (ảnh chụp bằng phím `PrtScn` đã được HĐH ghi vào clipboard trước khi trang web nhận sự kiện). Khiên hoạt động hiệu quả nhất với **Snipping Tool, trình quay màn hình và khi chia sẻ màn hình họp trực tuyến**. Để bảo mật tuyệt đối, hãy kết hợp Privacy Mode ẩn IP.
+7. 🔒 **Privacy Mode Tự Động Khi Mất Tiêu Điểm (Auto Privacy Mask)**:
+   - IP/MAC/Gateway được ẩn mặc định (`***.***.***.***`, `••:••:••:••:••:••`); nút **"🔒 Hiện IP mạng"** để xem bản rõ khi cần.
+   - **Tự động kích hoạt khi có rủi ro rò rỉ**: Ngay khi cửa sổ **mất tiêu điểm** — mở Snipping Tool (`Win + Shift + S`), trình quay màn hình, chuyển tab/ứng dụng hoặc bật chia sẻ màn hình họp trực tuyến — hệ thống **tự động ẩn lại toàn bộ IP trước khi ảnh chụp/chia sẻ kịp thu được hình**.
+   - Nút trạng thái `Privacy: AUTO ẨN IP` trên header luôn hiển thị tình trạng bảo vệ.
+   - ℹ️ **Vì sao thiết kế này?** Trình duyệt web không thể chặn cơ chế chụp màn hình của hệ điều hành (ảnh `PrtScn` đã được ghi vào clipboard trước khi trang web nhận sự kiện phím). Vì vậy thay vì lớp phủ "chặn chụp" vô hiệu, hệ thống bảo vệ **dữ liệu bên trong ảnh** — mọi ảnh chụp chỉ thu được địa chỉ đã che, vô dụng với kẻ thu thập thông tin.
 
 ---
 

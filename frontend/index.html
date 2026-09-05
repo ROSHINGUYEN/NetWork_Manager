@@ -31,10 +31,10 @@
           <span class="label">Internet:</span>
           <span class="status-val online" id="top-internet-status">● Đang kết nối</span>
         </div>
-        <div class="status-item security-shield-item" id="top-shield-indicator" title="Anti-Capture ON: Tự động khóa màn hình khi phát hiện chụp màn hình (PrtScn), cửa sổ mất tiêu điểm (Snipping Tool Win+Shift+S) hoặc thao tác in ấn / xuất PDF">
+        <div class="status-item security-shield-item" id="top-shield-indicator" title="Privacy Mode TỰ ĐỘNG: Toàn bộ IP mạng sẽ tự động bị ẩn (***.***.***.***) ngay khi cửa sổ mất tiêu điểm (chụp màn hình, chia sẻ màn hình, chuyển ứng dụng/tab)">
           <span class="shield-dot-pulse">●</span>
-          <span class="label">Bảo vệ:</span>
-          <span class="status-val text-green" id="top-shield-text">Anti-Capture ON</span>
+          <span class="label">Privacy:</span>
+          <span class="status-val text-green" id="top-shield-text">AUTO ẨN IP</span>
         </div>
         <div class="status-item time-item">
           <span id="system-clock">--:--:--</span>
@@ -137,10 +137,6 @@
             <button type="button" class="btn-viettel-privacy is-masked" id="btn-toggle-ip-mask" title="Ẩn hoặc hiện toàn bộ địa chỉ IP mạng nội bộ (Privacy Mode)">
               <span class="btn-icon" id="ip-mask-icon">🔒</span>
               <span id="ip-mask-label">Hiện IP mạng</span>
-            </button>
-            <button type="button" class="btn-viettel-shield-test" id="btn-test-shield" title="Thử nghiệm kích hoạt khiên đỏ cảnh báo chống chụp màn hình">
-              <span class="btn-icon">🚨</span>
-              <span>Test Chống Chụp</span>
             </button>
           </div>
         </div>
@@ -552,65 +548,6 @@
           <button type="submit" class="btn-save" id="modal-save">Lưu cấu hình</button>
         </div>
       </form>
-    </div>
-  </div>
-
-  <!-- 4. KHIÊN ĐỎ BẢO MẬT CHỐNG CHỤP MÀN HÌNH (ANTI-SCREENSHOT RED WARNING SHIELD) -->
-  <div id="security-screenshot-shield" class="security-screenshot-shield" style="display: none;" aria-hidden="true">
-    <div class="shield-hazard-stripe top"></div>
-    <div class="shield-hazard-stripe bottom"></div>
-    
-    <div class="shield-watermark-overlay">
-      <div class="watermark-line">🚨 CHỐNG CHỤP MÀN HÌNH &bull; CONFIDENTIAL LAN DATA &bull; ANTI-SCREENSHOT SHIELD &bull; BẢO VỆ DỮ LIỆU IP 🚨</div>
-      <div class="watermark-line">🚨 CHỐNG CHỤP MÀN HÌNH &bull; CONFIDENTIAL LAN DATA &bull; ANTI-SCREENSHOT SHIELD &bull; BẢO VỆ DỮ LIỆU IP 🚨</div>
-      <div class="watermark-line">🚨 CHỐNG CHỤP MÀN HÌNH &bull; CONFIDENTIAL LAN DATA &bull; ANTI-SCREENSHOT SHIELD &bull; BẢO VỆ DỮ LIỆU IP 🚨</div>
-      <div class="watermark-line">🚨 CHỐNG CHỤP MÀN HÌNH &bull; CONFIDENTIAL LAN DATA &bull; ANTI-SCREENSHOT SHIELD &bull; BẢO VỆ DỮ LIỆU IP 🚨</div>
-      <div class="watermark-line">🚨 CHỐNG CHỤP MÀN HÌNH &bull; CONFIDENTIAL LAN DATA &bull; ANTI-SCREENSHOT SHIELD &bull; BẢO VỆ DỮ LIỆU IP 🚨</div>
-    </div>
-
-    <div class="shield-dialog-card">
-      <div class="shield-alarm-beacon">
-        <span class="shield-beacon-wave wave-1"></span>
-        <span class="shield-beacon-wave wave-2"></span>
-        <span class="shield-alarm-emoji">🚨</span>
-      </div>
-
-      <h1 class="shield-main-title">🛡️ BẢO MẬT TUYỆT ĐỐI &bull; CHỐNG CHỤP MÀN HÌNH</h1>
-      <div class="shield-violation-badge">KHÔNG AI CÓ THỂ XEM HAY THU THẬP THÔNG TIN MẠNG (ZERO-LEAK ACTIVE)</div>
-
-      <p class="shield-description">
-        Hệ thống phòng vệ <strong>NETWORK MANAGER</strong> &mdash; Hệ Thống Quản Trị Mạng LAN đã kích hoạt giao thức cô lập toàn diện.<br>
-        Toàn bộ dữ liệu IP, MAC, thông số card mạng và kết nối đã được <strong>khóa mờ 100%</strong>. Bất kỳ công cụ chụp màn hình (Snipping Tool, PrtScn, Screen Recorder) <strong>chỉ thu được nền cảnh báo đỏ này</strong>, tuyệt đối không thể thấy được cấu trúc mạng.
-      </p>
-
-      <div class="shield-meta-box">
-        <div class="meta-row">
-          <span class="meta-name">Trạng thái phòng vệ:</span>
-          <span class="meta-status-active">ĐÃ KHÓA BẢO MẬT &bull; KHÔNG AI CÓ THỂ XEM</span>
-        </div>
-        <div class="meta-row">
-          <span class="meta-name">Dữ liệu IP &amp; Thiết bị LAN:</span>
-          <span class="meta-status-secure">ẨN 100% (FULL MASK &amp; BLURRED)</span>
-        </div>
-        <div class="meta-row">
-          <span class="meta-name">Thời điểm kích hoạt:</span>
-          <span class="meta-value" id="shield-detected-time">--:--:--</span>
-        </div>
-        <div class="meta-row">
-          <span class="meta-name">Hành vi bị ngăn chặn:</span>
-          <span class="meta-value" id="shield-detected-reason">Phát hiện thao tác chụp màn hình (PrtScn / Snipping Tool)</span>
-        </div>
-      </div>
-
-      <div class="shield-btn-group">
-        <button type="button" class="btn-unlock-shield" id="btn-unlock-shield">
-          🛡️ Tôi Đã Hiểu &bull; Mở Khóa Màn Hình (<span id="shield-countdown">3</span>s)
-        </button>
-      </div>
-
-      <div class="shield-footer-tag">
-        SECURITY SOC PRIVACY PROTOCOL &bull; ANTI-SCREENSHOT ZERO EXPOSURE
-      </div>
     </div>
   </div>
 
