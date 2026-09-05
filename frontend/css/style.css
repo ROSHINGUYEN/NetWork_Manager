@@ -1153,14 +1153,20 @@ body {
 /* -------------------------------------------------------------------------
    KHIÊN ĐỎ CẢNH BÁO CHỐNG CHỤP MÀN HÌNH (ANTI-SCREENSHOT RED WARNING SHIELD)
 /* Khiên che phủ toàn diện - ngăn chặn 100% nhìn xuyên thấu */
-body.shield-mode-active .portal-header,
-body.shield-mode-active .portal-nav,
-body.shield-mode-active .portal-main {
+/* Lưu ý: phải khớp chính xác class thật của layout: .viettel-header / .router-nav / .main-wrapper */
+body.shield-mode-active .viettel-header,
+body.shield-mode-active .router-nav,
+body.shield-mode-active .main-wrapper {
   filter: blur(50px) brightness(0.1) !important;
   opacity: 0.03 !important;
   pointer-events: none !important;
   user-select: none !important;
   transition: filter 0.1s ease, opacity 0.1s ease;
+}
+
+/* Khóa cuộn trang khi khiên đang kích hoạt */
+body.shield-mode-active {
+  overflow: hidden !important;
 }
 
 .security-screenshot-shield {

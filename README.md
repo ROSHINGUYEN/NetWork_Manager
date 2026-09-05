@@ -1,7 +1,22 @@
-# Network Security Monitor V1.3 - Zero-Footprint & In-Memory SOC
+# NETWORK MANAGER — Hệ Thống Quản Trị Mạng LAN (V1.3)
 
-> 🛡️ **Hệ thống giám sát an ninh mạng LAN thời gian thực (Real-time LAN Security Monitor & Packet Analyzer)**  
-> **Kiến trúc Zero-Footprint & In-Memory**: Hoạt động 100% trên bộ nhớ RAM — **Không tạo file database `data.db`, không dùng `.env`, không ghi log đĩa — Tắt ứng dụng là xóa sạch hoàn toàn mọi dấu vết.**
+> 🌐 **Real-time LAN Network Management & Security Monitoring Dashboard**  
+> 🇻🇳 **Ngôn ngữ giao diện: Tiếng Việt (vi)** — Thuật ngữ kỹ thuật hiển thị song ngữ Việt–Anh  
+> 🏠 Giao diện mô phỏng chuẩn trang quản trị **Modem GPON Gateway (phong cách Viettel Telecom)** — Logo hiển thị trên header: `NETWORK MANAGER` • Tiêu đề tab trình duyệt: `Hệ Thống Quản Trị Mạng LAN`  
+> ⚙️ **Kiến trúc Zero-Footprint & In-Memory SOC**: Hoạt động 100% trên bộ nhớ RAM — **Không tạo file database `data.db`, không dùng `.env`, không ghi log đĩa — Tắt ứng dụng là xóa sạch hoàn toàn mọi dấu vết.**
+
+---
+
+## 0. Tên & Ngôn Ngữ Hệ Thống
+
+| Thuộc tính | Giá trị thực tế trên giao diện |
+| :--- | :--- |
+| 🏷️ Thương hiệu (Logo header) | **NETWORK MANAGER** |
+| 📄 Tiêu đề tab trình duyệt (`<title>`) | **Hệ Thống Quản Trị Mạng LAN** |
+| 🖥️ Tiêu đề trang quản trị (`h1`) | **TRANG QUẢN TRỊ THIẾT BỊ MẠNG** (Modem GPON Gateway) |
+| 🌍 Ngôn ngữ giao diện | **Tiếng Việt** (`<html lang="vi">`) |
+| 🎨 Phong cách thiết kế | Glassmorphism Dark Theme theo chuẩn cổng quản trị Viettel (đỏ `#EE0033`) |
+| 📦 Tên kho mã nguồn | `NetWork_Manager` |
 
 ---
 
@@ -16,7 +31,7 @@ Hệ thống được tối ưu hóa đặc biệt theo tiêu chuẩn bảo mậ
 
 ---
 
-## 2. Điểm Mới Trong Phiên Bản V1.3 (New Features)
+## 2. Danh Mục Chức Năng V1.3 (Features)
 
 1. 🛡️ **Privacy Mode (Chế độ riêng tư toàn diện)**:
    - Che giấu địa chỉ IP (`***.***.***.***`), MAC (`••:••:••:••:••:••`), Gateway, Subnet và Public IP.
@@ -42,9 +57,12 @@ Hệ thống được tối ưu hóa đặc biệt theo tiêu chuẩn bảo mậ
      5. **Bài 5**: C2 Outbound Beaconing & Data Exfiltration.
    - Mỗi bài lab đều có cấu trúc 5 bước hoàn chỉnh: **Lỗ hổng (Vulnerability) → Phương thức tấn công (Attack Concept) → Cơ chế phát hiện (SOC Detection) → Biện pháp phòng ngừa (Mitigation) → Mã nguồn cấu hình an toàn (Secure Implementation)**.
    - Đi kèm nút **"▶️ Chạy Mô Phỏng"** an toàn trên localhost để kiểm tra phản hồi của SOC.
-7. 🚨 **Khiên Đỏ Cảnh Báo Chống Chụp Màn Hình (Anti-Screenshot Red Shield)**:
-   - Tự động kích hoạt khi phát hiện thao tác `PrintScreen`, `Win + Shift + S`, Snipping Tool, MacOS `Cmd + Shift + 3/4`, In ấn `Ctrl + P`.
-   - Phủ kín màn hình bằng nền đỏ cảnh báo, làm sạch clipboard và đếm ngược 3 giây xác nhận an toàn.
+7. 🚨 **Khiên Đỏ Chống Chụp Màn Hình (Anti-Capture Red Shield)**:
+   - Nút trạng thái `Anti-Capture ON` nằm trên header, kèm nút **"🚨 Test Chống Chụp"** để kiểm tra nhanh.
+   - **Cơ chế 1 — Phát hiện phím tắt**: Bắt `PrtScn`, `Ctrl + Shift + S`, phím tắt chụp màn hình macOS (`Cmd + Shift + 3/4/5`) và thao tác in ấn / xuất PDF (`Ctrl + P`, sự kiện `beforeprint`).
+   - **Cơ chế 2 — Phát hiện mất tiêu điểm (Focus-Loss Defense) ✨**: Khi bạn bấm `Win + Shift + S` (Snipping Tool), hệ điều hành **không bao giờ** gửi phím `Win` đến trình duyệt — vì vậy hệ thống nhận diện qua sự kiện **mất focus cửa sổ**: ngay khi Snipping Tool / trình quay màn hình mở lên, khiên đỏ phủ kín trang **trước** khi người dùng kịp kéo vùng chọn → ảnh chụp chỉ thu được nền cảnh báo đỏ.
+   - Khi kích hoạt: phủ toàn màn hình bằng nền đỏ cảnh báo, **làm mờ 100%** header/menu/nội dung (blur 50px), khóa cuộn trang, ghi sự kiện vào nhật ký SOC, xóa clipboard và đếm ngược 3 giây trước khi cho phép bấm "Mở Khóa Màn Hình".
+   - ⚠️ **Giới hạn nền tảng (minh bạch kỹ thuật)**: Trình duyệt web không thể chặn tuyệt đối ảnh chụp ở cấp hệ điều hành (ảnh chụp bằng phím `PrtScn` đã được HĐH ghi vào clipboard trước khi trang web nhận sự kiện). Khiên hoạt động hiệu quả nhất với **Snipping Tool, trình quay màn hình và khi chia sẻ màn hình họp trực tuyến**. Để bảo mật tuyệt đối, hãy kết hợp Privacy Mode ẩn IP.
 
 ---
 
@@ -65,7 +83,7 @@ Hệ thống được tối ưu hóa đặc biệt theo tiêu chuẩn bảo mậ
 ## 4. Cấu Trúc Mã Nguồn
 
 ```
-network-monitor/
+NetWork_Manager/
 ├── backend/                       # Máy chủ Backend (FastAPI + C Module)
 │   ├── api/                       # Router REST API & WebSocket
 │   │   ├── connections.py         #   /api/connections
@@ -101,9 +119,9 @@ network-monitor/
 │   ├── logging_config.py          # Log console (không tạo file đĩa)
 │   └── main.py                    # Khởi tạo FastAPI App
 │
-├── frontend/                      # Giao diện SOC Dashboard thời gian thực
-│   ├── css/style.css              #   Glassmorphism Dark Theme & Viettel Router Design
-│   ├── js/app.js                  #   WebSocket client, Privacy manager & Lab runner
+├── frontend/                      # Giao diện "Hệ Thống Quản Trị Mạng LAN" (tiếng Việt)
+│   ├── css/style.css              #   Glassmorphism Dark Theme & Viettel GPON Design
+│   ├── js/app.js                  #   WebSocket client, Privacy manager & Anti-Capture Shield
 │   └── index.html                 #   Trang chủ điều hành 6 Tab
 │
 ├── docs/                          # Tài liệu kỹ thuật
@@ -135,9 +153,11 @@ python run.py
 1. Script tự động kiểm tra cổng khả dụng (nếu cổng 8000 đã có ứng dụng khác chiếm dụng, script tự động chọn cổng 8001, 8002... mà không bao giờ bị crash).
 2. Tự kiểm tra và cài đặt nhanh các thư viện nếu máy tính còn thiếu (`fastapi`, `uvicorn`, `psutil`, `scapy`...).
 3. Tự động mở trình duyệt web:
-   * **Dashboard SOC**: `http://localhost:8000` (hoặc cổng tự động gán)
+   * **Trang Quản Trị Mạng LAN**: `http://localhost:8000` (hoặc cổng tự động gán)
    * **Swagger API Docs**: `http://localhost:8000/docs`
 4. **Tắt ứng dụng**: Nhấn `Ctrl + C` trong cửa sổ console. Toàn bộ dữ liệu bộ nhớ RAM lập tức được xóa sạch.
+
+> 💡 **Yêu cầu đặc quyền**: Để bắt gói tin & quét LAN chính xác, hãy chạy bằng **Run as Administrator** và cài đặt **Npcap** (Windows) / `libpcap` (Linux).
 
 ---
 
@@ -164,5 +184,11 @@ python run.py
 
 ## 7. Tài Liệu Nghiên Cứu Chuyên Sâu
 
-* **Giáo trình đào tạo an ninh mạng**: Đọc ngay tại [docs/NETWORK_SECURITY_CURRICULUM.md](file:///e:/network-monitor/docs/NETWORK_SECURITY_CURRICULUM.md)
-* **Bản đồ kiến trúc hệ thống**: Xem tại [docs/ARCHITECTURE_ROADMAP.md](file:///e:/network-monitor/docs/ARCHITECTURE_ROADMAP.md)
+* **Giáo trình đào tạo an ninh mạng**: [docs/NETWORK_SECURITY_CURRICULUM.md](docs/NETWORK_SECURITY_CURRICULUM.md)
+* **Bản đồ kiến trúc hệ thống**: [docs/ARCHITECTURE_ROADMAP.md](docs/ARCHITECTURE_ROADMAP.md)
+
+---
+
+## 8. Giấy Phép & Mục Đích Sử Dụng
+
+Dự án phục vụ **mục đích giáo dục an ninh mạng & quản trị mạng cá nhân**. Vui lòng chỉ sử dụng trên mạng LAN của chính bạn hoặc môi trường được cấp phép. Tác giả không chịu trách nhiệm với bất kỳ hành vi lạm dụng nào.

@@ -1067,7 +1067,7 @@
     // Làm sạch clipboard để nếu người dùng chụp qua clipboard thì không thu được dữ liệu
     try {
       if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText("[CẢNH BÁO AN NINH MẠNG] Hành vi chụp màn hình hoặc sao chép thông tin mạng đã bị chặn bởi Network Security Monitor.");
+        navigator.clipboard.writeText("[CẢNH BÁO AN NINH MẠNG] Hành vi chụp màn hình hoặc sao chép thông tin mạng đã bị chặn bởi NETWORK MANAGER - Hệ Thống Quản Trị Mạng LAN.");
       }
     } catch (e) {
       // Bỏ qua nếu trình duyệt không cấp quyền truy cập clipboard
@@ -1168,6 +1168,33 @@
   // Chống in ấn / Xuất PDF
   window.addEventListener("beforeprint", () => {
     triggerScreenshotProtection("Phát hiện thao tác In ấn hoặc Xuất tệp PDF (Print Preview)");
+  });
+
+  // -------------------------------------------------------------------------
+  // PHÒNG VỆ CHÍNH CHỐNG SNIPPING TOOL / SCREEN RECORDER (FOCUS-LOSS DEFENSE)
+  // -----------------------------------------------------------------------
+  // Giới hạn nền tảng phải biết rõ:
+  //  - Phím Win (Win + Shift + S) KHÔNG BAO GIỜ tới được trang web vì Hệ điều hành chặn.
+  //  - Bấm PrtScn: HĐH chụp vào clipboard TRƯỚC khi trang web nhận sự kiện phím.
+  // => Cơ chế duy nhất hoạt động THỰC TẾ trên trình duyệt: phát hiện cửa sổ MẤT TIÊU ĐIỂM.
+  // Khi Snipping Tool mở (Win+Shift+S), màn hình mờ đi và trang web mất focus ngay lập tức.
+  // Trang phản ứng bằng cách phủ KHIÊN ĐỎ TRƯỚC khi người dùng kịp kéo vùng chọn,
+  // nên mọi ảnh chụp về sau chỉ thu được nền cảnh báo đỏ.
+  let blurTriggerTimer = null;
+  window.addEventListener("blur", () => {
+    clearTimeout(blurTriggerTimer);
+    // Chờ một nhịp ngắn để bỏ qua trường hợp click ra ngoài rồi quay lại ngay lập tức
+    blurTriggerTimer = setTimeout(() => {
+      if (document.hasFocus()) return; // Đã lấy lại focus -> không phải chụp màn hình
+      if (!state.isShieldActive) {
+        triggerScreenshotProtection("Phát hiện cửa sổ mất tiêu điểm (Snipping Tool Win+Shift+S / Screen Recorder / Chuyển ứng dụng)");
+      }
+    }, 120);
+  });
+  window.addEventListener("focus", () => {
+    clearTimeout(blurTriggerTimer);
+    // Khi quay lại cửa sổ mà khiên đang bật (do mất tiêu điểm trước đó),
+    // giữ nguyên khiên - người dùng phải chờ hết đếm ngược rồi bấm "Mở Khóa Màn Hình".
   });
 
   // -------------------------------------------------------------------------
