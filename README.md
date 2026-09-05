@@ -1,85 +1,160 @@
-# NETWORK MANAGER — Hệ Thống Quản Trị Mạng LAN
+<div align="center">
 
-> 🌐 **Real-time LAN Network Management & Security Monitoring Dashboard**  
-> 🇻🇳 **Ngôn ngữ giao diện: Tiếng Việt (vi)** — Thuật ngữ kỹ thuật hiển thị song ngữ Việt–Anh  
-> 🏠 Giao diện mô phỏng chuẩn trang quản trị **Modem GPON Gateway (phong cách Viettel Telecom)** — Logo hiển thị trên header: `NETWORK MANAGER` • Tiêu đề tab trình duyệt: `Hệ Thống Quản Trị Mạng LAN`  
-> ⚙️ **Kiến trúc Zero-Footprint & In-Memory SOC**: Hoạt động 100% trên bộ nhớ RAM — **Không tạo file database `data.db`, không dùng `.env`, không ghi log đĩa — Tắt ứng dụng là xóa sạch hoàn toàn mọi dấu vết.**
+# 🌐 NETWORK MANAGER
+
+### HỆ THỐNG QUẢN lÝ MẠNG LAN
+**Real-time LAN Device Management & Security Monitoring Dashboard**
+
+![Python](https://img.shields.io/badge/Python-3.11%2B-3776AB?logo=python&logoColor=white)
+![Backend](https://img.shields.io/badge/Backend-FastAPI-009688?logo=fastapi&logoColor=white)
+![Parser](https://img.shields.io/badge/Packet%20Parser-C%20(ctypes)-A8B9CC?logo=c&logoColor=black)
+![Frontend](https://img.shields.io/badge/Frontend-Vanilla%20JS%20%2B%20Chart.js-F7DF1E?logo=javascript&logoColor=black)
+![Realtime](https://img.shields.io/badge/Realtime-WebSocket-010101?logo=socketdotio&logoColor=white)
+![Platform](https://img.shields.io/badge/Platform-Windows-0078D6?logo=windows11&logoColor=white)
+![Language UI](https://img.shields.io/badge/Giao%20di%E1%BB%87n-Ti%E1%BA%BFng%20Vi%E1%BB%87t%20%F0%9F%87%BB%F0%9F%87%B3-DD0031)
+![Mục đích](https://img.shields.io/badge/M%E1%BB%A5c%20%C4%91%C3%ADch-Gi%C3%A1o%20d%E1%BB%A5c%20%26%20SOC-2EA043)
+
+📸 **Ảnh demo — Trang quản trị thiết bị mạng (IP/MAC được Privacy Mode tự động che):**
+
+![Demo — Danh sách thiết bị kết nối (LAN Clients)](docs/images/dashboard-lan-clients.png)
+
+*Giao diện mô phỏng chuẩn trang quản trị **Modem GPON Gateway** (phong cách Viettel Telecom).*
+
+</div>
+
+> ⚙️ **Kiến trúc Zero-Footprint & In-Memory SOC**: Hoạt động 100% trên bộ nhớ RAM — **không tạo `data.db`, không dùng `.env`, không ghi log đĩa — tắt ứng dụng là xóa sạch hoàn toàn mọi dấu vết.**
 
 ---
 
-## 0. Tên & Ngôn Ngữ Hệ Thống
+## 1. Tên & Nhận Diện Hệ Thống (Chi Tiết)
 
-| Thuộc tính | Giá trị thực tế trên giao diện |
+| Vị trí trên giao diện | Giá trị thực tế |
 | :--- | :--- |
-| 🏷️ Thương hiệu (Logo header) | **NETWORK MANAGER** |
+| 🏷️ Logo góc trái header (nền đỏ Viettel) | **NETWORK MANAGER** |
 | 📄 Tiêu đề tab trình duyệt (`<title>`) | **Hệ Thống Quản Trị Mạng LAN** |
-| 🖥️ Tiêu đề trang quản trị (`h1`) | **TRANG QUẢN TRỊ THIẾT BỊ MẠNG** (Modem GPON Gateway) |
+| 🖥️ Tiêu đề lớn bên phải logo (`h1`) | **TRANG QUẢN TRỊ THIẾT BỊ MẠNG** |
+| 📡 Dòng mô tả dưới tiêu đề | `Modem GPON Gateway • Dải mạng LAN ***.***.***.*** /24` |
+| 🟢 Badge trạng thái trên header | `Internet: ● Đang kết nối` • `Privacy: AUTO ẨN IP` • Đồng hồ hệ thống |
+| 🗂️ 6 tab điều hành | Danh sách thiết bị • Lưu lượng & Băng thông • Kết nối & Gói tin • An ninh SOC • Security Lab • Nhật ký |
 | 🌍 Ngôn ngữ giao diện | **Tiếng Việt** (`<html lang="vi">`) |
-| 🎨 Phong cách thiết kế | Glassmorphism Dark Theme theo chuẩn cổng quản trị Viettel (đỏ `#EE0033`) |
-| 📦 Tên kho mã nguồn | `NetWork_Manager` |
+| 🎨 Phong cách thiết kế | Dark header + điểm nhấn đỏ theo chuẩn cổng quản trị Viettel (màu `#EE0033`) |
+| 📦 Kho mã nguồn | [ROSHINGUYEN/NetWork_Manager](https://github.com/ROSHINGUYEN/NetWork_Manager) |
+
+### 🌏 Ngôn Ngữ Hệ Thống
+
+- 🇻🇳 **Giao diện người dùng: 100% Tiếng Việt** — tên tab, nút bấm, tiêu đề bảng, thông báo toast.
+- 🔤 **Thuật ngữ kỹ thuật song ngữ Việt–Anh** — ví dụ: *Cổng mở (Open Ports)*, *Độ trễ (Latency)*, *Băng thông (Bandwidth)*.
+- 📚 **Tài liệu dự án** (README, giáo trình lab) viết bằng tiếng Việt.
+- 💻 **Mã nguồn**: chú thích tiếng Việt, tên biến/hàm tiếng Anh chuẩn clean-code.
 
 ---
 
-## 1. Triết Lý Thiết Kế: Zero-Footprint (Tắt Là Quên Sạch)
+## 2. Tính Năng Nổi Bật (Kèm Ảnh Demo)
 
-Hệ thống được tối ưu hóa đặc biệt theo tiêu chuẩn bảo mật & giáo dục an ninh mạng:
-* **Không lưu database ra ổ cứng (`:memory:`)**: Toàn bộ dữ liệu thiết bị, phiên bắt gói tin, kết nối socket và sự kiện bảo mật được quản lý bằng bộ nhớ RAM.
-* **Không cần file cấu hình `.env`**: Mọi thông số vận hành đã được lập trình sẵn giá trị mặc định tối ưu nhất, sẵn sàng chạy ngay mà không sinh bất kỳ file rác cấu hình nào.
-* **Không ghi file log rác ra đĩa**: Toàn bộ nhật ký hoạt động được truyền trực tiếp ra Console / Terminal.
-* **Bảo mật & Riêng tư tuyệt đối**: Khi bạn nhấn `Ctrl + C` hoặc đóng cửa sổ chương trình, hệ điều hành tự động thu hồi RAM. **Không một byte dữ liệu nào bị lưu lại trên máy tính.**
-* **Khởi động thông minh chống xung đột cổng**: Tự động phát hiện cổng bận và chuyển đổi cổng khả dụng (8000, 8001...) để ngăn chặn hoàn toàn lỗi `[Errno 10048]`.
+### 2.1 📱 Quét & Quản Lý Thiết Bị LAN (LAN Clients)
+> 📸 *Ảnh demo chính ở đầu trang — Tab "Danh sách thiết bị kết nối"*
+
+- Quét toàn bộ dải mạng (VD: `192.168.1.0/24`) bằng **Ping Sweep đa luồng** kết hợp bảng ARP & TCP socket check.
+- Bảng dữ liệu trực tiếp: **Trạng thái • Tên thiết bị & Ghi nhớ • Địa chỉ IP • Địa chỉ MAC • Hãng sản xuất (OUI) • Hệ điều hành (OS) • Cổng mở • Độ trễ (ms)**.
+- **Nhận diện hệ điều hành tự động** (TTL + cổng đặc trưng + OUI): `Windows 10/11`, `Android OS`, `RouterOS / Linux Embedded`, `Embedded Linux (IP Camera)`, `FreeRTOS / Embedded IoT`...
+- ✏️ Đặt **tên thân thiện** cho từng thiết bị (VD: *"Camera phòng khách"*, *"iPhone của Nam"*) — ghi nhớ trong bộ nhớ phiên.
+- Bộ lọc nhanh `Tất cả (6) / Đang Online / Đã Offline` + ô tìm kiếm theo IP, tên, hãng, MAC.
+- Nút **"🔄 Quét mạng ngay"** và ô **"Dải IP quét"** tùy chỉnh (tự động điền dải LAN hiện tại).
+
+<!-- 📸 Bổ sung ảnh: lưu vào docs/images/devices-filter.png rồi bỏ comment 2 dòng dưới
+![Bộ lọc & tìm kiếm & đặt tên thân thiện](docs/images/devices-filter.png)
+-->
+
+### 2.2 🔒 Privacy Mode — Ẩn IP Tự Động (Bảo Vệ Ảnh Chụp Màn Hình)
+
+- **Ẩn mặc định 100%**: IP → `***.***.***.***`, MAC → `••:••:••:••:••:••`, Gateway / Subnet / Public IP đều được che.
+- Badge header **`Privacy: AUTO ẨN IP`** hiển thị tình trạng bảo vệ theo thời gian thực.
+- ⚡ **Tự động kích hoạt khi có rủi ro rò rỉ**: ngay khi cửa sổ **mất tiêu điểm** (mở Snipping Tool `Win+Shift+S`, trình quay màn hình, chuyển tab/ứng dụng, bật chia sẻ màn hình họp trực tuyến), hệ thống **ẩn lại toàn bộ IP TRƯỚC khi ảnh chụp/chia sẻ kịp thu được hình** → mọi ảnh chụp chỉ thấy địa chỉ đã che, vô dụng với kẻ thu thập thông tin.
+- Nút **"🔒 Hiện IP mạng"** để xem bản rõ tạm thời; bấm lần nữa để ẩn lại.
+- ℹ️ *Vì sao thiết kế này?* Trình duyệt không thể chặn cơ chế chụp màn hình của hệ điều hành (ảnh `PrtScn` đã vào clipboard trước khi trang nhận sự kiện phím) — nên hệ thống bảo vệ **dữ liệu bên trong ảnh** thay vì lớp phủ "chặn chụp" vô hiệu.
+
+<!-- 📸 Bổ sung ảnh: docs/images/privacy-masked.png
+![Privacy Mode đang ẩn IP](docs/images/privacy-masked.png)
+-->
+
+### 2.3 🌐 Thông Tin Chi Tiết Card Mạng (Wi-Fi / Ethernet Adapter)
+
+- **Wi-Fi**: SSID, BSSID của Access Point, cường độ sóng (%), chuẩn Radio (802.11), tốc độ Rx/Tx Mbps.
+- **Ethernet**: tốc độ Gigabit/Fast Ethernet, chế độ Full/Half Duplex, MTU.
+
+<!-- 📸 Bổ sung ảnh: docs/images/adapter-info.png -->
+
+### 2.4 📊 Thống Kê Lưu Lượng & Băng Thông Thời Gian Thực
+
+- Biểu đồ **Chart.js** mượt mà: băng thông tải xuống / tải lên lấy mẫu liên tục theo card mạng.
+- Thẻ tóm tắt đầu trang: `Kết nối Internet` • `Cổng Gateway (Router)` • `Thiết bị hoạt động 6/6 Online` • `Băng thông máy chủ ↓↑`.
+
+<!-- 📸 Bổ sung ảnh: docs/images/traffic-chart.png -->
+
+### 2.5 🔌 Giám Sát Kết Nối & Gói Tin (L3/L4)
+
+- Toàn bộ socket **TCP/UDP** đang hoạt động kèm **tên dịch vụ chuẩn hóa** (HTTP, HTTPS, DNS, SMB, RDP...), **tên tiến trình + PID**.
+- Bắt & giải mã **gói tin thời gian thực** (module C cấp thấp + Scapy), gắn cờ gói bất thường.
+
+<!-- 📸 Bổ sung ảnh: docs/images/connections.png -->
+
+### 2.6 🛡️ Trung Tâm An Ninh Mạng (SOC)
+
+- **Tự động phát hiện & cảnh báo**: thiết bị mới xuất hiện, thiết bị mở cổng nguy hiểm (`Telnet 23`, `SMB 445`, `RDP 3389`), hành vi dò quét, bất thường ARP...
+- Phân loại mức độ: **Thông tin / Cảnh báo / Nghiêm trọng** kèm bộ đếm tổng quan.
+
+<!-- 📸 Bổ sung ảnh: docs/images/soc-center.png -->
+
+### 2.7 🧪 Security Lab — Phòng Thí Nghiệm Phòng Thủ Mạng
+
+5 bài thực hành chuẩn SOC, mỗi bài gồm 5 phần: **Lỗ hổng → Khái niệm tấn công → SOC phát hiện → Phòng ngừa → Cấu hình an toàn**:
+
+| # | Bài lab | Kỹ thuật |
+| :-: | :--- | :--- |
+| 1 | ARP Cache Poisoning & MITM | Giả ARP làm chặn đường gateway |
+| 2 | TCP Stealth Scan | Quét NULL / XMAS / FIN |
+| 3 | Rogue Device & DHCP Hijacking | Thiết bị lạ + giả mạo DHCP |
+| 4 | Khai thác dịch vụ nhạy cảm | SMB 445, Telnet 23, RDP 3389 & Lateral Movement |
+| 5 | Cleartext Sniffing | Đọc mật khẩu plaintext qua HTTP/Telnet/FTP |
+
+- Nút **"▶️ Chạy Mô Phỏng"** kích hoạt mô phỏng **an toàn trên localhost** để xem SOC phản hồi.
+
+<!-- 📸 Bổ sung ảnh: docs/images/security-lab.png -->
+
+### 2.8 🌍 Tra Cứu Nhà Mạng & Public IP (Opt-In Consent)
+
+- Tuân thủ quyền riêng tư: **chỉ tra cứu khi bạn chủ động bấm nút đồng ý**.
+- Trả về: Nhà mạng (ISP), số hiệu ASN, Public IP thực tế, vị trí địa lý.
 
 ---
 
-## 2. Danh Mục Chức Năng
+## 3. Sơ Đồ 6 Tab Điều Hành (Theo Giao Diện Thật)
 
-1. 🛡️ **Privacy Mode (Chế độ riêng tư toàn diện)**:
-   - Che giấu địa chỉ IP (`***.***.***.***`), MAC (`••:••:••:••:••:••`), Gateway, Subnet và Public IP.
-   - Giúp giảng viên, sinh viên và kỹ sư an toàn quay video demo hoặc thuyết trình mà không lo lộ cấu trúc mạng.
-2. 📱 **Nhận Diện Hệ Điều Hành & Loại Thiết Bị (Device & OS Fingerprinting)**:
-   - Tự động phân tích TTL (Time-To-Live), dải cổng dịch vụ và Vendor OUI để ước lượng hệ điều hành: **Windows**, **Linux**, **Apple (macOS / iOS)**, **Android**, **RouterOS / Gateway**, **IoT**.
-   - Phân loại rõ ràng icon: Máy tính, Điện thoại, Smart TV, Camera IP, Router, Thiết bị Smart Home.
-3. 🌐 **Thông Tin Chi Tiết Card Mạng (Wi-Fi & Ethernet Adapter Specs)**:
-   - Tự động nhận diện chuẩn kết nối vật lý: Wi-Fi (802.11) hoặc Ethernet (802.3).
-   - Với Wi-Fi: Trích xuất trực tiếp tên mạng SSID, địa chỉ BSSID của Access Point, cường độ sóng (Signal %), loại sóng (Radio type) và tốc độ truyền nhận dữ liệu (Rx/Tx Mbps).
-   - Với Ethernet: Hiển thị tốc độ Gigabit/Fast Ethernet, chế độ truyền Duplex (Full/Half) và MTU.
-4. 🌍 **Tra Cứu Nhà Mạng & Public IP (Opt-In Consent Model)**:
-   - Tuân thủ nghiêm ngặt quyền riêng tư: **Chỉ tra cứu khi người dùng chủ động nhấp nút đồng ý**.
-   - Cung cấp thông tin nhà cung cấp dịch vụ Internet (ISP), số hiệu mạng ASN, địa chỉ Public IP thực tế và vị trí địa lý.
-5. 🔌 **Theo Dõi Kết Nối Socket Kèm Tên Dịch Vụ (Service Mapping)**:
-   - Hiển thị chi tiết: IP:Port nguồn, IP:Port đích, Giao thức TCP/UDP, Tên dịch vụ chuẩn hóa (HTTP, HTTPS, DNS, SSH, SMB, RDP...), Trạng thái phiên (ESTABLISHED, LISTEN, CLOSE_WAIT...), Tên tiến trình (`process_name`) và PID.
-6. 🧪 **Phòng Thí Nghiệm An Ninh Mạng Tương Tác (Security Lab Mode)**:
-   - Tích hợp 5 bài thực hành an ninh mạng theo chuẩn SOC quốc tế:
-     1. **Bài 1**: ARP Cache Poisoning & Man-In-The-Middle (MITM).
-     2. **Bài 2**: TCP Stealth Scan (NULL, XMAS, FIN flags scan).
-     3. **Bài 3**: Rogue Device Detection & DHCP Hijacking.
-     4. **Bài 4**: Khai thác dịch vụ nhạy cảm & Lateral Movement (SMB 445, Telnet 23, RDP 3389).
-     5. **Bài 5**: C2 Outbound Beaconing & Data Exfiltration.
-   - Mỗi bài lab đều có cấu trúc 5 bước hoàn chỉnh: **Lỗ hổng (Vulnerability) → Phương thức tấn công (Attack Concept) → Cơ chế phát hiện (SOC Detection) → Biện pháp phòng ngừa (Mitigation) → Mã nguồn cấu hình an toàn (Secure Implementation)**.
-   - Đi kèm nút **"▶️ Chạy Mô Phỏng"** an toàn trên localhost để kiểm tra phản hồi của SOC.
-7. 🔒 **Privacy Mode Tự Động Khi Mất Tiêu Điểm (Auto Privacy Mask)**:
-   - IP/MAC/Gateway được ẩn mặc định (`***.***.***.***`, `••:••:••:••:••:••`); nút **"🔒 Hiện IP mạng"** để xem bản rõ khi cần.
-   - **Tự động kích hoạt khi có rủi ro rò rỉ**: Ngay khi cửa sổ **mất tiêu điểm** — mở Snipping Tool (`Win + Shift + S`), trình quay màn hình, chuyển tab/ứng dụng hoặc bật chia sẻ màn hình họp trực tuyến — hệ thống **tự động ẩn lại toàn bộ IP trước khi ảnh chụp/chia sẻ kịp thu được hình**.
-   - Nút trạng thái `Privacy: AUTO ẨN IP` trên header luôn hiển thị tình trạng bảo vệ.
-   - ℹ️ **Vì sao thiết kế này?** Trình duyệt web không thể chặn cơ chế chụp màn hình của hệ điều hành (ảnh `PrtScn` đã được ghi vào clipboard trước khi trang web nhận sự kiện phím). Vì vậy thay vì lớp phủ "chặn chụp" vô hiệu, hệ thống bảo vệ **dữ liệu bên trong ảnh** — mọi ảnh chụp chỉ thu được địa chỉ đã che, vô dụng với kẻ thu thập thông tin.
+| Tab | Tên hiển thị trên giao diện | Chức năng chính |
+| :-: | :--- | :--- |
+| 1 | 📱 **Danh sách thiết bị kết nối (LAN Clients)** | Quét dải IP, liệt kê thiết bị, OS fingerprint, đặt tên thân thiện, Privacy Mode |
+| 2 | 📊 **Thống kê lưu lượng & Băng thông** | Biểu đồ băng thông real-time, thông số card Wi-Fi/Ethernet |
+| 3 | 🔌 **Giám sát Kết nối & Gói tin (L3/L4)** | Socket + tiến trình + dịch vụ; bảng gói tin bắt được |
+| 4 | 🛡️ **Trung tâm An ninh Mạng (SOC)** | Sự kiện cảnh báo an ninh thời gian thực |
+| 5 | 🧪 **Security Lab (Phòng Thủ Mạng)** | 5 bài lab phòng thủ + mô phỏng an toàn |
+| 6 | 📋 **Nhật ký hệ thống (System Logs)** | Nhật ký hoạt động của máy chủ |
 
 ---
 
-## 3. Ngăn Xếp Công Nghệ (Tech Stack)
+## 4. Ngăn Xếp Công Nghệ (Tech Stack)
 
-* **Backend Core**: Python 3.11+ (FastAPI + AsyncIO + Uvicorn).
-* **Low-Level C Module**: Module C cấp thấp (`packet_parser.c`) bóc tách header nhị phân Ethernet / IPv4 / TCP / UDP với ctypes FFI bridge.
-* **Storage**: In-Memory Data Store thuần Python (Zero Disk IO, 100% RAM).
-* **Network & Security Services**:
-  * `psutil` & `netsh wlan` / `nmcli`: Thu thập socket, tiến trình và thông số Wi-Fi/Ethernet.
-  * Scapy + Npcap / libpcap: Packet sniffer tầng liên kết dữ liệu.
-  * Ping Sweep đa luồng kết hợp đọc bảng ARP hệ thống.
-  * IEEE OUI Vendor Database.
-* **Frontend**: Vanilla Web (HTML5 + CSS3 Glassmorphism Dark Mode + JavaScript thuần ES6 + Chart.js via CDN). Không cần build npm.
+| Thành phần | Công nghệ |
+| :--- | :--- |
+| Backend Core | Python 3.11+ — **FastAPI + AsyncIO + Uvicorn** |
+| Packet Parser | Module **C** cấp thấp (`packet_parser.c`) bóc tách header Ethernet/IPv4/TCP/UDP qua **ctypes FFI** (có fallback thuần Python) |
+| Storage | **In-Memory Data Store** thuần Python (Zero Disk I/O, 100% RAM) |
+| Mạng & An ninh | `psutil`, `netsh wlan`/`nmcli`, **Scapy + Npcap/libpcap**, Ping Sweep đa luồng + ARP, IEEE OUI Vendor DB |
+| Frontend | Vanilla HTML5 + CSS3 (Glassmorphism Dark) + JavaScript ES6 + **Chart.js** (CDN) — không cần build npm |
+| Truyền dữ liệu | REST API + **WebSocket** hai chiều thời gian thực |
 
 ---
 
-## 4. Cấu Trúc Mã Nguồn
+## 5. Cấu Trúc Mã Nguồn
 
 ```
 NetWork_Manager/
@@ -100,94 +175,152 @@ NetWork_Manager/
 │   │   ├── packet_parser.h        #   Khai báo C Struct
 │   │   ├── build_c.py             #   Script tự biên dịch DLL/SO
 │   │   └── c_parser_bridge.py     #   CTypes bridge & fallback thuần Python
-│   ├── memory_store.py            #   Bộ nhớ tạm thời thuần Python RAM - Tắt là quên sạch
+│   ├── memory_store.py            #   Bộ nhớ tạm RAM thuần Python - tắt là quên sạch
 │   ├── services/                  # Các dịch vụ nền
-│   │   ├── connection_tracker.py  #   Theo dõi Socket, Process & Port Service Mapping
+│   │   ├── connection_tracker.py  #   Theo dõi Socket, Process & Service Mapping
 │   │   ├── interface_info.py      #   Trích xuất thông số Wi-Fi / Ethernet adapter
 │   │   ├── monitor_manager.py     #   Bộ điều phối trung tâm
-│   │   ├── network_info.py        #   Nhận diện IP, Gateway, Subnet & Tra cứu ISP Opt-in
+│   │   ├── network_info.py        #   IP, Gateway, Subnet & Tra cứu ISP Opt-in
 │   │   ├── packet_sniffer.py      #   Thu thập & giải mã packet
 │   │   ├── ping_service.py        #   Ping ICMP & ARP Table kèm trích xuất TTL
-│   │   ├── scanner.py             #   Dò quét mạng LAN, Port & Nhận diện OS Fingerprinting
+│   │   ├── scanner.py             #   Quét LAN, Port & OS Fingerprinting
 │   │   ├── security_engine.py     #   Phát hiện bất thường an ninh mạng
-│   │   ├── traffic_monitor.py     #   Lấy mẫu băng thông mạng thời gian thực
+│   │   ├── traffic_monitor.py     #   Lấy mẫu băng thông thời gian thực
 │   │   ├── vendor_lookup.py       #   Tra cứu hãng MAC OUI
 │   │   └── websocket_manager.py   #   Quản lý kết nối WebSocket
-│   │
 │   ├── config.py                  # Cấu hình mặc định (không cần .env)
-│   ├── logging_config.py          # Log console (không tạo file đĩa)
+│   ├── logging_config.py          # Log console (không ghi đĩa)
 │   └── main.py                    # Khởi tạo FastAPI App
 │
 ├── frontend/                      # Giao diện "Hệ Thống Quản Trị Mạng LAN" (tiếng Việt)
-│   ├── css/style.css              #   Glassmorphism Dark Theme & Viettel GPON Design
-│   ├── js/app.js                  #   WebSocket client, Privacy manager & Anti-Capture Shield
-│   └── index.html                 #   Trang chủ điều hành 6 Tab
+│   ├── css/style.css              #   Glassmorphism Dark & Viettel GPON Design
+│   ├── js/app.js                  #   WebSocket client, Privacy manager & Auto Mask
+│   └── index.html                 #   Trang chủ điều hành 6 tab
 │
 ├── docs/                          # Tài liệu kỹ thuật
 │   ├── ARCHITECTURE_ROADMAP.md    #   Bản đồ kiến trúc hệ thống
-│   └── NETWORK_SECURITY_CURRICULUM.md # Giáo trình an ninh mạng & 5 bài Lab chuyên sâu
+│   ├── NETWORK_SECURITY_CURRICULUM.md # Giáo trình an ninh mạng & 5 bài Lab
+│   └── images/                    #   Ảnh demo cho README (xem docs/images/README.md)
 │
 ├── .gitignore                     # Bỏ qua file rác
 ├── requirements.txt               # Thư viện Python tối giản
-├── run.py                         # Trình khởi động thông minh 1-Click (Tự tránh xung đột cổng)
-└── start.bat                      # File khởi động nhanh trên Windows
+├── run.py                         # Trình khởi động thông minh 1-Click
+└── start.bat                      # Khởi động nhanh trên Windows
 ```
 
 ---
 
-## 5. Hướng Dẫn Khởi Động (Chỉ 1 Thao Tác)
+## 6. Cài Đặt & Khởi Động (Chỉ 1 Thao Tác)
 
-### Cách 1: Dành cho Windows (Khuyên Dùng)
+### 📋 Yêu cầu hệ thống
+| Yêu cầu | Chi tiết |
+| :--- | :--- |
+| Hệ điều hành | Windows 10/11 (khuyên dùng); Linux hỗ trợ cơ bản |
+| Python | **3.11+** |
+| Đặc quyền | Chạy bằng **Run as Administrator** để bắt gói tin & quét LAN chính xác |
+| Bắt gói tin | Cài **[Npcap](https://npcap.com/#download)** (Windows) / `libpcap` (Linux) |
+| Trình duyệt | Chrome / Edge / Firefox bản mới nhất |
+
+### 🚀 Cách 1: Windows (Khuyên dùng)
 Nhấp đúp chuột vào file:
 ```bat
 start.bat
 ```
 
-### Cách 2: Khởi động qua Terminal
+### 🚀 Cách 2: Terminal
 ```bash
 python run.py
 ```
 
-### Điểm Vượt Trội Khi Khởi Động
-1. Script tự động kiểm tra cổng khả dụng (nếu cổng 8000 đã có ứng dụng khác chiếm dụng, script tự động chọn cổng 8001, 8002... mà không bao giờ bị crash).
-2. Tự kiểm tra và cài đặt nhanh các thư viện nếu máy tính còn thiếu (`fastapi`, `uvicorn`, `psutil`, `scapy`...).
-3. Tự động mở trình duyệt web:
-   * **Trang Quản Trị Mạng LAN**: `http://localhost:8000` (hoặc cổng tự động gán)
-   * **Swagger API Docs**: `http://localhost:8000/docs`
-4. **Tắt ứng dụng**: Nhấn `Ctrl + C` trong cửa sổ console. Toàn bộ dữ liệu bộ nhớ RAM lập tức được xóa sạch.
-
-> 💡 **Yêu cầu đặc quyền**: Để bắt gói tin & quét LAN chính xác, hãy chạy bằng **Run as Administrator** và cài đặt **Npcap** (Windows) / `libpcap` (Linux).
+### ✨ Script khởi động tự động:
+1. Kiểm tra & **tự cài thư viện còn thiếu** (`fastapi`, `uvicorn`, `psutil`, `scapy`...).
+2. **Tự tránh xung đột cổng**: nếu cổng 8000 bận, tự chuyển sang 8001, 8002... (không bao giờ lỗi `[Errno 10048]`).
+3. Tự mở trình duyệt:
+   - 🖥️ **Trang Quản Trị Mạng LAN**: `http://localhost:8000`
+   - 📚 **Swagger API Docs**: `http://localhost:8000/docs`
+4. 🛑 **Tắt ứng dụng**: nhấn `Ctrl + C` — toàn bộ dữ liệu RAM được xóa sạch ngay lập tức.
 
 ---
 
-## 6. Danh Mục API Endpoints
+## 7. Hướng Dẫn Sử Dụng Chi Tiết
+
+### Bước 1 — Quét mạng LAN
+1. Mở tab **"📱 Danh sách thiết bị kết nối (LAN Clients)"**.
+2. Hệ thống **tự quét định kỳ**; muốn quét ngay, nhập dải IP vào ô **"Dải IP quét"** (VD: `192.168.1.0/24`) rồi bấm nút đỏ **"🔄 Quét mạng ngay"**.
+3. Kết quả hiện bảng: trạng thái, IP, MAC, hãng sản xuất, hệ điều hành, cổng mở, độ trễ.
+
+### Bước 2 — Đặt tên thân thiện cho thiết bị
+- Nhấp nút **✏️** ở cuối mỗi dòng thiết bị → nhập tên gợi nhớ (VD: *"Camera phòng khách"*) → Lưu.
+
+### Bước 3 — Dùng Privacy Mode (Che IP)
+- **Mặc định IP đã được ẩn** (`***.***.***.***`).
+- Muốn xem bản rõ: bấm **"🔒 Hiện IP mạng"** → bấm lần nữa để ẩn lại.
+- **Tự động bảo vệ**: khi bạn chụp màn hình, chia sẻ màn hình hoặc chuyển tab/ứng dụng (cửa sổ mất tiêu điểm), hệ thống **tự động ẩn lại toàn bộ IP** — ảnh chụp chỉ thu được địa chỉ đã che. Badge `Privacy: AUTO ẨN IP` trên header luôn báo trạng thái.
+
+### Bước 4 — Xem lưu lượng & thông tin card mạng
+- Vào tab **"📊 Thống kê lưu lượng & Băng thông"**: biểu đồ real-time ↓↑, thông số Wi-Fi (SSID, BSSID, sóng %) hoặc Ethernet (Gigabit, Duplex, MTU).
+
+### Bước 5 — Giám sát kết nối & gói tin
+- Tab **"🔌 Giám sát Kết nối & Gói tin"**: xem socket TCP/UDP kèm tiến trình, dịch vụ; bảng gói tin bắt được thời gian thực (cần chạy với Administrator + Npcap).
+
+### Bước 6 — Theo dõi cảnh báo an ninh (SOC)
+- Tab **"🛡️ Trung tâm An ninh Mạng (SOC)"**: cảnh báo thiết bị lạ, cổng nguy hiểm, dò quét... theo 3 mức Thông tin / Cảnh báo / Nghiêm trọng.
+
+### Bước 7 — Thực hành Security Lab
+- Tab **"🧪 Security Lab"**: đọc kỹ 5 phần của từng bài lab → bấm **"▶️ Chạy Mô Phỏng"** để mô phỏng an toàn trên localhost và xem SOC phát hiện.
+
+### Bước 8 — Tra cứu nhà mạng (tùy chọn)
+- Chỉ khi bạn **chủ động bấm đồng ý**: hệ thống tra cứu ISP, ASN, Public IP, vị trí của đường mạng hiện tại.
+
+---
+
+## 8. Danh Mục API Endpoints
 
 | Phương thức | Endpoint | Chức năng |
 | :---: | :--- | :--- |
 | `GET` | `/api/health` | Kiểm tra trạng thái máy chủ |
-| `GET` | `/api/stats` | Thống kê số lượng thiết bị, uptime, tốc độ mạng, latency |
-| `GET` | `/api/network` | Lấy IP nội bộ, Gateway, Subnet, DNS |
-| `GET` | `/api/network/adapter` | Lấy chi tiết Card mạng: Wi-Fi (SSID, BSSID, Signal %, Speed) / Ethernet (Gigabit, Duplex, MTU) |
-| `POST`| `/api/network/isp-lookup` | Tra cứu nhà mạng ISP, ASN, Public IP (Người dùng chủ động nhấn cho phép) |
-| `GET` | `/api/devices` | Danh sách thiết bị LAN kèm OS badge, Vendor, Port mở, Ping |
-| `POST`| `/api/devices/scan` | Yêu cầu quét dải mạng LAN mới ngay lập tức |
-| `PATCH`| `/api/devices/{mac}` | Sửa tên gợi nhớ hoặc loại thiết bị |
-| `GET` | `/api/connections` | Danh sách Socket TCP/UDP đang hoạt động kèm tên Dịch vụ & Tiến trình |
-| `GET` | `/api/packets` | Danh sách gói tin bắt được gần nhất |
-| `GET` | `/api/security/events` | Danh sách sự kiện cảnh báo an ninh SOC |
-| `GET` | `/api/lab` | Danh sách 5 bài thực hành an ninh mạng chi tiết |
-| `POST`| `/api/lab/simulate/{lab_id}` | Kích hoạt mô phỏng an ninh mạng an toàn trên localhost |
-| `WS`  | `/ws/dashboard` | Kênh WebSocket truyền dữ liệu thời gian thực lên giao diện |
+| `GET` | `/api/stats` | Số thiết bị, uptime, tốc độ mạng, latency |
+| `GET` | `/api/network` | IP nội bộ, Gateway, Subnet, DNS |
+| `GET` | `/api/network/adapter` | Chi tiết card mạng Wi-Fi/Ethernet |
+| `POST` | `/api/network/isp-lookup` | Tra cứu ISP, ASN, Public IP (Opt-in) |
+| `GET` | `/api/devices` | Danh sách thiết bị LAN kèm OS, Vendor, Ports, Ping |
+| `POST` | `/api/devices/scan` | Yêu cầu quét dải mạng ngay |
+| `PATCH` | `/api/devices/{mac}` | Sửa tên thân thiện / loại thiết bị |
+| `GET` | `/api/connections` | Socket TCP/UDP kèm Dịch vụ & Tiến trình |
+| `GET` | `/api/packets` | Gói tin bắt được gần nhất |
+| `GET` | `/api/security/events` | Sự kiện cảnh báo an ninh SOC |
+| `GET` | `/api/lab` | Danh sách 5 bài lab chi tiết |
+| `POST` | `/api/lab/simulate/{lab_id}` | Mô phỏng an ninh an toàn trên localhost |
+| `WS` | `/ws/dashboard` | Kênh WebSocket dữ liệu thời gian thực |
 
 ---
 
-## 7. Tài Liệu Nghiên Cứu Chuyên Sâu
+## 9. Xử Lý Sự Cố (Troubleshooting)
 
-* **Giáo trình đào tạo an ninh mạng**: [docs/NETWORK_SECURITY_CURRICULUM.md](docs/NETWORK_SECURITY_CURRICULUM.md)
-* **Bản đồ kiến trúc hệ thống**: [docs/ARCHITECTURE_ROADMAP.md](docs/ARCHITECTURE_ROADMAP.md)
+| Hiện tượng | Nguyên nhân & Cách xử lý |
+| :--- | :--- |
+| Không quét được thiết bị / không bắt gói tin | Chưa chạy **Administrator** hoặc chưa cài **Npcap** → cài Npcap rồi chạy lại với quyền Admin |
+| Cổng 8000 bị chiếm (`Errno 10048`) | Script **tự động chuyển cổng** 8001, 8002... — xem cổng thực tế in trong console |
+| WebSocket hiện `● Mất kết nối...` | Server vừa khởi động lại → trang **tự kết nối lại sau 3 giây**; nếu không được, F5 trình duyệt |
+| Không thấy SSID/băng thông Wi-Fi | Card không hỗ trợ `netsh wlan show interfaces` → kiểm tra bằng lệnh này thủ công |
+| Ảnh chụp vẫn thấy IP | Kiểm tra badge `Privacy: AUTO ẨN IP` — nếu đang hiện `Hiện IP mạng` nghĩa là bạn đã tắt chế độ ẩn, bấm lại nút 🔒 |
 
 ---
 
-## 8. Giấy Phép & Mục Đích Sử Dụng
+## 10. Tài Liệu Nghiên Cứu Chuyên Sâu
+
+- 📚 **Giáo trình đào tạo an ninh mạng**: [docs/NETWORK_SECURITY_CURRICULUM.md](docs/NETWORK_SECURITY_CURRICULUM.md)
+- 🗺️ **Bản đồ kiến trúc hệ thống**: [docs/ARCHITECTURE_ROADMAP.md](docs/ARCHITECTURE_ROADMAP.md)
+- 📸 **Hướng dẫn bổ sung ảnh demo**: [docs/images/README.md](docs/images/README.md)
+
+---
+
+## 11. Giấy Phép & Mục Đích Sử Dụng
 
 Dự án phục vụ **mục đích giáo dục an ninh mạng & quản trị mạng cá nhân**. Vui lòng chỉ sử dụng trên mạng LAN của chính bạn hoặc môi trường được cấp phép. Tác giả không chịu trách nhiệm với bất kỳ hành vi lạm dụng nào.
+
+<div align="center">
+
+**NETWORK MANAGER** — Hệ Thống Quản Trị Mạng LAN 🇻🇳
+
+</div>
