@@ -25,35 +25,11 @@
 
 > ⚙️ **Kiến trúc Zero-Footprint & In-Memory SOC**: Hoạt động 100% trên bộ nhớ RAM — **không tạo `data.db`, không dùng `.env`, không ghi log đĩa — tắt ứng dụng là xóa sạch hoàn toàn mọi dấu vết.**
 
----
+-----------
 
-## 1. Tên & Nhận Diện Hệ Thống (Chi Tiết)
+## 1. Tính Năng Nổi Bật 
 
-| Vị trí trên giao diện | Giá trị thực tế |
-| :--- | :--- |
-| 🏷️ Logo góc trái header (nền đỏ Viettel) | **NETWORK MANAGER** |
-| 📄 Tiêu đề tab trình duyệt (`<title>`) | **Hệ Thống Quản Lý Mạng LAN** |
-| 🖥️ Tiêu đề lớn bên phải logo (`h1`) | **TRANG QUẢN LÝ THIẾT BỊ MẠNG** |
-| 📡 Dòng mô tả dưới tiêu đề | `Modem GPON Gateway • Dải mạng LAN ***.***.***.*** /24` |
-| 🟢 Badge trạng thái trên header | `Internet: ● Đang kết nối` • `Privacy: AUTO ẨN IP` • Đồng hồ hệ thống |
-| 🗂️ 5 tab điều hành | Danh sách thiết bị • Lưu lượng & Băng thông • Kết nối & Gói tin • An ninh SOC • Nhật ký |
-| 🌍 Ngôn ngữ giao diện | **Tiếng Việt** (`<html lang="vi">`) |
-| 🎨 Phong cách thiết kế | Dark header + điểm nhấn đỏ theo chuẩn cổng quản lý Viettel (màu `#EE0033`) |
-| 🖱️ Điều hướng nhanh | Bấm logo **NETWORK MANAGER** để quay về trang chủ (Tab Danh sách thiết bị) |
-| 📦 Kho mã nguồn | [ROSHINGUYEN/NetWork_Manager](https://github.com/ROSHINGUYEN/NetWork_Manager) |
-
-### 🌏 Ngôn Ngữ Hệ Thống
-
-- 🇻🇳 **Giao diện người dùng: 100% Tiếng Việt** — tên tab, nút bấm, tiêu đề bảng, thông báo toast.
-- 🔤 **Thuật ngữ kỹ thuật song ngữ Việt–Anh** — ví dụ: *Cổng mở (Open Ports)*, *Độ trễ (Latency)*, *Băng thông (Bandwidth)*.
-- 📚 **Tài liệu dự án** (README, giáo trình lab) viết bằng tiếng Việt.
-- 💻 **Mã nguồn**: chú thích tiếng Việt, tên biến/hàm tiếng Anh chuẩn clean-code.
-
----
-
-## 2. Tính Năng Nổi Bật (Kèm Ảnh Demo)
-
-### 2.1 📱 Quét & Quản Lý Thiết Bị LAN (LAN Clients)
+### 📱 Quét & Quản Lý Thiết Bị LAN (LAN Clients)
 > 📸 *Ảnh demo chính ở đầu trang — Tab "Danh sách thiết bị kết nối"*
 
 - Quét toàn bộ dải mạng (VD: `192.168.1.0/24`) bằng **Ping Sweep đa luồng** kết hợp bảng ARP & TCP socket check.
@@ -63,11 +39,8 @@
 - Bộ lọc nhanh `Tất cả (6) / Đang Online / Đã Offline` + ô tìm kiếm theo IP, tên, hãng, MAC.
 - Nút **"🔄 Quét mạng ngay"** và ô **"Dải IP quét"** tùy chỉnh (tự động điền dải LAN hiện tại).
 
-<!-- 📸 Bổ sung ảnh: lưu vào docs/images/devices-filter.png rồi bỏ comment 2 dòng dưới
-![Bộ lọc & tìm kiếm & đặt tên thân thiện](docs/images/devices-filter.png)
--->
-
-### 2.2 🔒 Privacy Mode — Ẩn IP Tự Động (Bảo Vệ Ảnh Chụp Màn Hình)
+----------
+### 2 🔒 Privacy Mode — Ẩn IP Tự Động (Bảo Vệ Ảnh Chụp Màn Hình)
 
 - **Ẩn mặc định 100%**: IP → `***.***.***.***`, MAC → `••:••:••:••:••:••`, Gateway / Subnet / Public IP đều được che.
 - Badge header **`Privacy: AUTO ẨN IP`** hiển thị tình trạng bảo vệ theo thời gian thực.
@@ -75,46 +48,44 @@
 - Nút **"🔒 Hiện IP mạng"** để xem bản rõ tạm thời; bấm lần nữa để ẩn lại.
 - ℹ️ *Vì sao thiết kế này?* Trình duyệt không thể chặn cơ chế chụp màn hình của hệ điều hành (ảnh `PrtScn` đã vào clipboard trước khi trang nhận sự kiện phím) — nên hệ thống bảo vệ **dữ liệu bên trong ảnh** thay vì lớp phủ "chặn chụp" vô hiệu.
 
-<!-- 📸 Bổ sung ảnh: docs/images/privacy-masked.png
-![Privacy Mode đang ẩn IP](docs/images/privacy-masked.png)
--->
+-----------------
 
-### 2.3 🌐 Thông Tin Chi Tiết Card Mạng (Wi-Fi / Ethernet Adapter)
+### 3 🌐 Thông Tin Chi Tiết Card Mạng (Wi-Fi / Ethernet Adapter)
 
 - **Wi-Fi**: SSID, BSSID của Access Point, cường độ sóng (%), chuẩn Radio (802.11), tốc độ Rx/Tx Mbps.
 - **Ethernet**: tốc độ Gigabit/Fast Ethernet, chế độ Full/Half Duplex, MTU.
 
-<!-- 📸 Bổ sung ảnh: docs/images/adapter-info.png -->
+----------------
 
-### 2.4 📊 Thống Kê Lưu Lượng & Băng Thông Thời Gian Thực
+### 4 📊 Thống Kê Lưu Lượng & Băng Thông Thời Gian Thực
 
 - Biểu đồ **Chart.js** mượt mà: băng thông tải xuống / tải lên lấy mẫu liên tục theo card mạng.
 - Thẻ tóm tắt đầu trang: `Kết nối Internet` • `Cổng Gateway (Router)` • `Thiết bị hoạt động 6/6 Online` • `Băng thông máy chủ ↓↑`.
 
-<!-- 📸 Bổ sung ảnh: docs/images/traffic-chart.png -->
+----------------
 
-### 2.5 🔌 Giám Sát Kết Nối & Gói Tin (L3/L4)
+### 5 🔌 Giám Sát Kết Nối & Gói Tin (L3/L4)
 
 - Toàn bộ socket **TCP/UDP** đang hoạt động kèm **tên dịch vụ chuẩn hóa** (HTTP, HTTPS, DNS, SMB, RDP...), **tên tiến trình + PID**.
 - Bắt & giải mã **gói tin thời gian thực** (module C cấp thấp + Scapy), gắn cờ gói bất thường.
 
-<!-- 📸 Bổ sung ảnh: docs/images/connections.png -->
+----
 
-### 2.6 🛡️ Trung Tâm An Ninh Mạng (SOC)
+### 6 🛡️ Trung Tâm An Ninh Mạng (SOC)
 
 - **Tự động phát hiện & cảnh báo**: thiết bị mới xuất hiện, thiết bị mở cổng nguy hiểm (`Telnet 23`, `SMB 445`, `RDP 3389`), hành vi dò quét, bất thường ARP...
 - Phân loại mức độ: **Thông tin / Cảnh báo / Nghiêm trọng** kèm bộ đếm tổng quan.
 
-<!-- 📸 Bổ sung ảnh: docs/images/soc-center.png -->
+---
 
-### 2.7 🌍 Tra Cứu Nhà Mạng & Public IP (Opt-In Consent)
+### 7 🌍 Tra Cứu Nhà Mạng & Public IP (Opt-In Consent)
 
 - Tuân thủ quyền riêng tư: **chỉ tra cứu khi bạn chủ động bấm nút đồng ý**.
 - Trả về: Nhà mạng (ISP), số hiệu ASN, Public IP thực tế, vị trí địa lý.
 
 ---
 
-## 3. Sơ Đồ 6 Tab Điều Hành (Theo Giao Diện Thật)
+## 8. Sơ Đồ 6 Tab Điều Hành (Theo Giao Diện Thật)
 
 | Tab | Tên hiển thị trên giao diện | Chức năng chính |
 | :-: | :--- | :--- |
@@ -126,7 +97,7 @@
 
 ---
 
-## 4. Ngăn Xếp Công Nghệ (Tech Stack)
+## 9. Ngăn Xếp Công Nghệ (Tech Stack)
 
 | Thành phần | Công nghệ |
 | :--- | :--- |
@@ -139,7 +110,7 @@
 
 ---
 
-## 5. Cài Đặt & Khởi Động (Chỉ 1 Thao Tác)
+## 10. Cài Đặt & Khởi Động (Chỉ 1 Thao Tác)
 
 ### 📋 Yêu cầu hệ thống
 | Yêu cầu | Chi tiết |
@@ -165,7 +136,7 @@ python run.py
 
 ---
 
-## 6. Hướng Dẫn Sử Dụng Chi Tiết
+## 11. Hướng Dẫn Sử Dụng Chi Tiết
 
 ### Bước 1 — Quét mạng LAN
 1. Mở tab **"📱 Danh sách thiết bị kết nối (LAN Clients)"**.
@@ -194,26 +165,7 @@ python run.py
 
 ---
 
-## 7. Danh Mục API Endpoints
-
-| Phương thức | Endpoint | Chức năng |
-| :---: | :--- | :--- |
-| `GET` | `/api/health` | Kiểm tra trạng thái máy chủ |
-| `GET` | `/api/stats` | Số thiết bị, uptime, tốc độ mạng, latency |
-| `GET` | `/api/network` | IP nội bộ, Gateway, Subnet, DNS |
-| `GET` | `/api/network/adapter` | Chi tiết card mạng Wi-Fi/Ethernet |
-| `POST` | `/api/network/isp-lookup` | Tra cứu ISP, ASN, Public IP (Opt-in) |
-| `GET` | `/api/devices` | Danh sách thiết bị LAN kèm OS, Vendor, Ports, Ping |
-| `POST` | `/api/devices/scan` | Yêu cầu quét dải mạng ngay |
-| `PATCH` | `/api/devices/{mac}` | Sửa tên thân thiện / loại thiết bị |
-| `GET` | `/api/connections` | Socket TCP/UDP kèm Dịch vụ & Tiến trình |
-| `GET` | `/api/packets` | Gói tin bắt được gần nhất |
-| `GET` | `/api/security/events` | Sự kiện cảnh báo an ninh SOC |
-| `WS` | `/ws/dashboard` | Kênh WebSocket dữ liệu thời gian thực |
-
----
-
-## 8. Xử Lý Sự Cố (Troubleshooting)
+## 12. Xử Lý Sự Cố (Troubleshooting)
 
 | Hiện tượng | Nguyên nhân & Cách xử lý |
 | :--- | :--- |
@@ -225,7 +177,7 @@ python run.py
 
 ---
 
-## 9. Giấy Phép (License)
+## 13. Giấy Phép (License)
 
 Dự án được phát hành theo giấy phép **MIT** — xem toàn văn tại [LICENSE](LICENSE).
 
