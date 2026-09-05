@@ -13,6 +13,7 @@
 ![Platform](https://img.shields.io/badge/Platform-Windows-0078D6?logo=windows11&logoColor=white)
 ![Language UI](https://img.shields.io/badge/Giao%20di%E1%BB%87n-Ti%E1%BA%BFng%20Vi%E1%BB%87t%20%F0%9F%87%BB%F0%9F%87%B3-DD0031)
 ![Mục đích](https://img.shields.io/badge/M%E1%BB%A5c%20%C4%91%C3%ADch-Gi%C3%A1o%20d%E1%BB%A5c%20%26%20SOC-2EA043)
+![License](https://img.shields.io/badge/License-MIT-8A2BE2?logo=openaccessinitiative&logoColor=white)
 
 📸 **Ảnh demo — Trang quản trị thiết bị mạng (IP/MAC được Privacy Mode tự động che):**
 
@@ -35,7 +36,7 @@
 | 🖥️ Tiêu đề lớn bên phải logo (`h1`) | **TRANG QUẢN TRỊ THIẾT BỊ MẠNG** |
 | 📡 Dòng mô tả dưới tiêu đề | `Modem GPON Gateway • Dải mạng LAN ***.***.***.*** /24` |
 | 🟢 Badge trạng thái trên header | `Internet: ● Đang kết nối` • `Privacy: AUTO ẨN IP` • Đồng hồ hệ thống |
-| 🗂️ 6 tab điều hành | Danh sách thiết bị • Lưu lượng & Băng thông • Kết nối & Gói tin • An ninh SOC • Security Lab • Nhật ký |
+| 🗂️ 5 tab điều hành | Danh sách thiết bị • Lưu lượng & Băng thông • Kết nối & Gói tin • An ninh SOC • Nhật ký |
 | 🌍 Ngôn ngữ giao diện | **Tiếng Việt** (`<html lang="vi">`) |
 | 🎨 Phong cách thiết kế | Dark header + điểm nhấn đỏ theo chuẩn cổng quản trị Viettel (màu `#EE0033`) |
 | 📦 Kho mã nguồn | [ROSHINGUYEN/NetWork_Manager](https://github.com/ROSHINGUYEN/NetWork_Manager) |
@@ -105,23 +106,7 @@
 
 <!-- 📸 Bổ sung ảnh: docs/images/soc-center.png -->
 
-### 2.7 🧪 Security Lab — Phòng Thí Nghiệm Phòng Thủ Mạng
-
-5 bài thực hành chuẩn SOC, mỗi bài gồm 5 phần: **Lỗ hổng → Khái niệm tấn công → SOC phát hiện → Phòng ngừa → Cấu hình an toàn**:
-
-| # | Bài lab | Kỹ thuật |
-| :-: | :--- | :--- |
-| 1 | ARP Cache Poisoning & MITM | Giả ARP làm chặn đường gateway |
-| 2 | TCP Stealth Scan | Quét NULL / XMAS / FIN |
-| 3 | Rogue Device & DHCP Hijacking | Thiết bị lạ + giả mạo DHCP |
-| 4 | Khai thác dịch vụ nhạy cảm | SMB 445, Telnet 23, RDP 3389 & Lateral Movement |
-| 5 | Cleartext Sniffing | Đọc mật khẩu plaintext qua HTTP/Telnet/FTP |
-
-- Nút **"▶️ Chạy Mô Phỏng"** kích hoạt mô phỏng **an toàn trên localhost** để xem SOC phản hồi.
-
-<!-- 📸 Bổ sung ảnh: docs/images/security-lab.png -->
-
-### 2.8 🌍 Tra Cứu Nhà Mạng & Public IP (Opt-In Consent)
+### 2.7 🌍 Tra Cứu Nhà Mạng & Public IP (Opt-In Consent)
 
 - Tuân thủ quyền riêng tư: **chỉ tra cứu khi bạn chủ động bấm nút đồng ý**.
 - Trả về: Nhà mạng (ISP), số hiệu ASN, Public IP thực tế, vị trí địa lý.
@@ -136,8 +121,7 @@
 | 2 | 📊 **Thống kê lưu lượng & Băng thông** | Biểu đồ băng thông real-time, thông số card Wi-Fi/Ethernet |
 | 3 | 🔌 **Giám sát Kết nối & Gói tin (L3/L4)** | Socket + tiến trình + dịch vụ; bảng gói tin bắt được |
 | 4 | 🛡️ **Trung tâm An ninh Mạng (SOC)** | Sự kiện cảnh báo an ninh thời gian thực |
-| 5 | 🧪 **Security Lab (Phòng Thủ Mạng)** | 5 bài lab phòng thủ + mô phỏng an toàn |
-| 6 | 📋 **Nhật ký hệ thống (System Logs)** | Nhật ký hoạt động của máy chủ |
+| 5 | 📋 **Nhật ký hệ thống (System Logs)** | Nhật ký hoạt động của máy chủ |
 
 ---
 
@@ -154,63 +138,7 @@
 
 ---
 
-## 5. Cấu Trúc Mã Nguồn
-
-```
-NetWork_Manager/
-├── backend/                       # Máy chủ Backend (FastAPI + C Module)
-│   ├── api/                       # Router REST API & WebSocket
-│   │   ├── connections.py         #   /api/connections
-│   │   ├── devices.py             #   /api/devices
-│   │   ├── events.py              #   /api/events
-│   │   ├── lab.py                 #   /api/lab & /api/lab/simulate/{lab_id}
-│   │   ├── network.py             #   /api/network, /api/network/adapter, /api/network/isp-lookup
-│   │   ├── packets.py             #   /api/packets
-│   │   ├── security.py            #   /api/security/events
-│   │   ├── stats.py               #   /api/stats
-│   │   └── websocket.py           #   /ws/dashboard
-│   │
-│   ├── c_modules/                 # Module C cấp thấp bóc tách gói tin
-│   │   ├── packet_parser.c        #   Mã nguồn C phân tích packet
-│   │   ├── packet_parser.h        #   Khai báo C Struct
-│   │   ├── build_c.py             #   Script tự biên dịch DLL/SO
-│   │   └── c_parser_bridge.py     #   CTypes bridge & fallback thuần Python
-│   ├── memory_store.py            #   Bộ nhớ tạm RAM thuần Python - tắt là quên sạch
-│   ├── services/                  # Các dịch vụ nền
-│   │   ├── connection_tracker.py  #   Theo dõi Socket, Process & Service Mapping
-│   │   ├── interface_info.py      #   Trích xuất thông số Wi-Fi / Ethernet adapter
-│   │   ├── monitor_manager.py     #   Bộ điều phối trung tâm
-│   │   ├── network_info.py        #   IP, Gateway, Subnet & Tra cứu ISP Opt-in
-│   │   ├── packet_sniffer.py      #   Thu thập & giải mã packet
-│   │   ├── ping_service.py        #   Ping ICMP & ARP Table kèm trích xuất TTL
-│   │   ├── scanner.py             #   Quét LAN, Port & OS Fingerprinting
-│   │   ├── security_engine.py     #   Phát hiện bất thường an ninh mạng
-│   │   ├── traffic_monitor.py     #   Lấy mẫu băng thông thời gian thực
-│   │   ├── vendor_lookup.py       #   Tra cứu hãng MAC OUI
-│   │   └── websocket_manager.py   #   Quản lý kết nối WebSocket
-│   ├── config.py                  # Cấu hình mặc định (không cần .env)
-│   ├── logging_config.py          # Log console (không ghi đĩa)
-│   └── main.py                    # Khởi tạo FastAPI App
-│
-├── frontend/                      # Giao diện "Hệ Thống Quản Trị Mạng LAN" (tiếng Việt)
-│   ├── css/style.css              #   Glassmorphism Dark & Viettel GPON Design
-│   ├── js/app.js                  #   WebSocket client, Privacy manager & Auto Mask
-│   └── index.html                 #   Trang chủ điều hành 6 tab
-│
-├── docs/                          # Tài liệu kỹ thuật
-│   ├── ARCHITECTURE_ROADMAP.md    #   Bản đồ kiến trúc hệ thống
-│   ├── NETWORK_SECURITY_CURRICULUM.md # Giáo trình an ninh mạng & 5 bài Lab
-│   └── images/                    #   Ảnh demo cho README (xem docs/images/README.md)
-│
-├── .gitignore                     # Bỏ qua file rác
-├── requirements.txt               # Thư viện Python tối giản
-├── run.py                         # Trình khởi động thông minh 1-Click
-└── start.bat                      # Khởi động nhanh trên Windows
-```
-
----
-
-## 6. Cài Đặt & Khởi Động (Chỉ 1 Thao Tác)
+## 5. Cài Đặt & Khởi Động (Chỉ 1 Thao Tác)
 
 ### 📋 Yêu cầu hệ thống
 | Yêu cầu | Chi tiết |
@@ -242,7 +170,7 @@ python run.py
 
 ---
 
-## 7. Hướng Dẫn Sử Dụng Chi Tiết
+## 6. Hướng Dẫn Sử Dụng Chi Tiết
 
 ### Bước 1 — Quét mạng LAN
 1. Mở tab **"📱 Danh sách thiết bị kết nối (LAN Clients)"**.
@@ -266,15 +194,12 @@ python run.py
 ### Bước 6 — Theo dõi cảnh báo an ninh (SOC)
 - Tab **"🛡️ Trung tâm An ninh Mạng (SOC)"**: cảnh báo thiết bị lạ, cổng nguy hiểm, dò quét... theo 3 mức Thông tin / Cảnh báo / Nghiêm trọng.
 
-### Bước 7 — Thực hành Security Lab
-- Tab **"🧪 Security Lab"**: đọc kỹ 5 phần của từng bài lab → bấm **"▶️ Chạy Mô Phỏng"** để mô phỏng an toàn trên localhost và xem SOC phát hiện.
-
-### Bước 8 — Tra cứu nhà mạng (tùy chọn)
+### Bước 7 — Tra cứu nhà mạng (tùy chọn)
 - Chỉ khi bạn **chủ động bấm đồng ý**: hệ thống tra cứu ISP, ASN, Public IP, vị trí của đường mạng hiện tại.
 
 ---
 
-## 8. Danh Mục API Endpoints
+## 7. Danh Mục API Endpoints
 
 | Phương thức | Endpoint | Chức năng |
 | :---: | :--- | :--- |
@@ -289,13 +214,11 @@ python run.py
 | `GET` | `/api/connections` | Socket TCP/UDP kèm Dịch vụ & Tiến trình |
 | `GET` | `/api/packets` | Gói tin bắt được gần nhất |
 | `GET` | `/api/security/events` | Sự kiện cảnh báo an ninh SOC |
-| `GET` | `/api/lab` | Danh sách 5 bài lab chi tiết |
-| `POST` | `/api/lab/simulate/{lab_id}` | Mô phỏng an ninh an toàn trên localhost |
 | `WS` | `/ws/dashboard` | Kênh WebSocket dữ liệu thời gian thực |
 
 ---
 
-## 9. Xử Lý Sự Cố (Troubleshooting)
+## 8. Xử Lý Sự Cố (Troubleshooting)
 
 | Hiện tượng | Nguyên nhân & Cách xử lý |
 | :--- | :--- |
@@ -307,7 +230,7 @@ python run.py
 
 ---
 
-## 10. Tài Liệu Nghiên Cứu Chuyên Sâu
+## 9. Tài Liệu Nghiên Cứu Chuyên Sâu
 
 - 📚 **Giáo trình đào tạo an ninh mạng**: [docs/NETWORK_SECURITY_CURRICULUM.md](docs/NETWORK_SECURITY_CURRICULUM.md)
 - 🗺️ **Bản đồ kiến trúc hệ thống**: [docs/ARCHITECTURE_ROADMAP.md](docs/ARCHITECTURE_ROADMAP.md)
@@ -315,9 +238,11 @@ python run.py
 
 ---
 
-## 11. Giấy Phép & Mục Đích Sử Dụng
+## 10. Giấy Phép (License)
 
-Dự án phục vụ **mục đích giáo dục an ninh mạng & quản trị mạng cá nhân**. Vui lòng chỉ sử dụng trên mạng LAN của chính bạn hoặc môi trường được cấp phép. Tác giả không chịu trách nhiệm với bất kỳ hành vi lạm dụng nào.
+Dự án được phát hành theo giấy phép **MIT** — xem toàn văn tại [LICENSE](LICENSE).
+
+> ⚠️ Dự án phục vụ **mục đích giáo dục an ninh mạng & quản trị mạng cá nhân**. Vui lòng chỉ sử dụng trên mạng LAN của chính bạn hoặc môi trường được cấp phép. Tác giả không chịu trách nhiệm với bất kỳ hành vi lạm dụng nào.
 
 <div align="center">
 

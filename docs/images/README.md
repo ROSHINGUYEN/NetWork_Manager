@@ -20,8 +20,7 @@ Chạy ứng dụng (`start.bat` hoặc `python run.py`), vào từng tab và ch
 | `connections.png` | Tab 3: giám sát socket TCP/UDP kèm tiến trình & dịch vụ |
 | `packets.png` | Tab 3: bảng gói tin bắt được thời gian thực |
 | `soc-center.png` | Tab 4: sự kiện cảnh báo an ninh (thiết bị lạ, cổng nguy hiểm...) |
-| `security-lab.png` | Tab 5: danh sách 5 bài lab + nút "▶️ Chạy Mô Phỏng" |
-| `system-logs.png` | Tab 6: nhật ký hệ thống |
+| `system-logs.png` | Tab 5: nhật ký hệ thống |
 | `isp-lookup.png` | Hộp thoại Opt-in tra cứu ISP / Public IP |
 
 > 💡 **Mẹo chụp ảnh đẹp cho README**: giữ Privacy Mode bật (mặc định) để không lộ IP thật; chụp ở độ rộng ≥ 1400px; định dạng PNG.

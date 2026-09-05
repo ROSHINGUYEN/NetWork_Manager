@@ -26,7 +26,6 @@ from backend.api import websocket as websocket_api
 from backend.api import connections as connections_api
 from backend.api import packets as packets_api
 from backend.api import security as security_api
-from backend.api import lab as lab_api
 from backend.config import settings
 from backend.logging_config import setup_logging
 from backend.memory_store import MemoryStore
@@ -69,7 +68,7 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(
     title="Network Security Monitor",
-    description="Giám sát an ninh mạng LAN, bóc tách gói tin, SOC Alert và Security Lab Mode trong RAM.",
+    description="Hệ Thống Quản Trị Mạng LAN: giám sát thiết bị, bóc tách gói tin và SOC Alert thời gian thực trong RAM.",
     version="1.3.0",
     lifespan=lifespan,
 )
@@ -95,7 +94,6 @@ app.include_router(websocket_api.router, tags=["websocket"])
 app.include_router(connections_api.router, prefix="/api/connections", tags=["connections"])
 app.include_router(packets_api.router, prefix="/api/packets", tags=["packets"])
 app.include_router(security_api.router, prefix="/api/security", tags=["security"])
-app.include_router(lab_api.router)
 
 
 @app.get("/api/health", tags=["health"])

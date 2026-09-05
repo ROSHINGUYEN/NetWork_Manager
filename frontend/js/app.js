@@ -16,7 +16,6 @@
     connections: [],
     packets: [],
     securityEvents: [],
-    labs: [],
     ispInfo: null,
     adapterInfo: null,
     filter: "all",
@@ -43,7 +42,6 @@
     tabEvents: document.getElementById("tab-events"),
     tabConnections: document.getElementById("tab-connections"),
     tabSecurity: document.getElementById("tab-security"),
-    tabLab: document.getElementById("tab-lab"),
     quickOnlineCount: document.getElementById("quick-online-count"),
     quickTotalCount: document.getElementById("quick-total-count"),
 
@@ -130,9 +128,6 @@
     threatInfoCount: document.getElementById("threat-info-count"),
     threatWarnCount: document.getElementById("threat-warn-count"),
     threatCritCount: document.getElementById("threat-crit-count"),
-
-    // Tab 6: Security Lab Mode
-    securityLabList: document.getElementById("security-lab-list"),
 
     // Toast Container
     toastContainer: document.getElementById("toast-container"),
@@ -355,14 +350,10 @@
     if (el.tabTraffic) el.tabTraffic.style.display = targetTab === "traffic" ? "block" : "none";
     if (el.tabConnections) el.tabConnections.style.display = targetTab === "connections" ? "block" : "none";
     if (el.tabSecurity) el.tabSecurity.style.display = targetTab === "security" ? "block" : "none";
-    if (el.tabLab) el.tabLab.style.display = targetTab === "lab" ? "block" : "none";
     if (el.tabEvents) el.tabEvents.style.display = targetTab === "events" ? "block" : "none";
 
     if (targetTab === "traffic") {
       setTimeout(drawTrafficChart, 50);
-    }
-    if (targetTab === "lab") {
-      loadLabs();
     }
   }
 
@@ -1355,120 +1346,6 @@
   }
 
   // -------------------------------------------------------------------------
-  // Phòng Thí Nghiệm An Ninh Mạng (Security Lab Mode - Tab 6)
-  // -------------------------------------------------------------------------
-
-  async function loadLabs() {
-    if (!el.securityLabList) return;
-    try {
-      const res = await fetch(`${API_BASE}/api/lab`);
-      if (res.ok) {
-        const data = await res.json();
-        state.labs = data.labs || [];
-        renderLabs();
-      }
-    } catch (e) {
-      console.error("Lỗi nạp bài thực hành an ninh:", e);
-      if (el.securityLabList) {
-        el.securityLabList.innerHTML = `<div class="empty-state-row" style="color: #DC2626;">Không thể tải bài lab: ${escapeHtml(e.message)}</div>`;
-      }
-    }
-  }
-
-  function renderLabs() {
-    if (!el.securityLabList) return;
-    if (!state.labs || state.labs.length === 0) {
-      el.securityLabList.innerHTML = '<div class="empty-state-row">Chưa có bài thực hành an ninh nào.</div>';
-      return;
-    }
-
-    const html = state.labs.map(lab => {
-      const sim = lab.simulation || {};
-      return `
-        <div class="lab-card" id="lab-${escapeHtml(lab.id)}">
-          <div class="lab-header">
-            <div class="lab-title-row">
-              <h3 class="lab-title">${escapeHtml(lab.title)}</h3>
-              <div class="lab-badges">
-                <span class="badge-lab-tag">${escapeHtml(lab.badge || "Network Lab")}</span>
-                <span class="badge-lab-diff">${escapeHtml(lab.difficulty || "Standard")}</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="lab-grid-details">
-            <div class="lab-step-box step-vuln">
-              <div class="step-badge">1. Lỗ Hổng (Vulnerability)</div>
-              <p>${escapeHtml(lab.vulnerability)}</p>
-            </div>
-
-            <div class="lab-step-box step-attack">
-              <div class="step-badge">2. Phương Thức Tấn Công (Attack Concept)</div>
-              <p>${escapeHtml(lab.attack_concept)}</p>
-            </div>
-
-            <div class="lab-step-box step-detect">
-              <div class="step-badge">3. Cơ Chế Phát Hiện (SOC Detection)</div>
-              <p>${escapeHtml(lab.detection)}</p>
-            </div>
-
-            <div class="lab-step-box step-mitigate">
-              <div class="step-badge">4. Biện Pháp Phòng Ngừa (Mitigation)</div>
-              <p>${escapeHtml(lab.mitigation)}</p>
-            </div>
-          </div>
-
-          <div class="lab-code-section">
-            <div class="code-title">🛠️ Triển Khai An Toàn (Secure Implementation):</div>
-            <pre class="code-block"><code>${escapeHtml(lab.secure_implementation)}</code></pre>
-          </div>
-
-          <div class="lab-action-row">
-            <div class="lab-sim-desc">
-              ${sim.description ? `<span>💡 <em>${escapeHtml(sim.description)}</em></span>` : ""}
-            </div>
-            <button type="button" class="btn-lab-simulate" data-lab-id="${escapeHtml(lab.id)}">
-              ${escapeHtml(sim.button_label || "▶️ Chạy Mô Phỏng")}
-            </button>
-          </div>
-        </div>
-      `;
-    }).join("");
-
-    el.securityLabList.innerHTML = html;
-
-    // Gắn sự kiện click mô phỏng
-    const simBtns = el.securityLabList.querySelectorAll(".btn-lab-simulate");
-    simBtns.forEach(btn => {
-      btn.addEventListener("click", async () => {
-        const labId = btn.dataset.labId;
-        const origText = btn.textContent;
-        btn.disabled = true;
-        btn.textContent = "⏳ Đang mô phỏng...";
-
-        try {
-          const res = await fetch(`${API_BASE}/api/lab/simulate/${labId}`, {
-            method: "POST"
-          });
-          const result = await res.json();
-          if (res.ok) {
-            showToast(result.message || "Đã kích hoạt mô phỏng an ninh!", "success");
-          } else {
-            showToast(result.detail || "Không thể thực thi mô phỏng", "error");
-          }
-        } catch (err) {
-          showToast("Lỗi kết nối khi gửi lệnh mô phỏng!", "error");
-        } finally {
-          setTimeout(() => {
-            btn.disabled = false;
-            btn.textContent = origText;
-          }, 2000);
-        }
-      });
-    });
-  }
-
-  // -------------------------------------------------------------------------
   // Tải dữ liệu ban đầu qua REST API
   // -------------------------------------------------------------------------
 
@@ -1515,9 +1392,8 @@
       renderPackets();
       renderSecurityEvents();
 
-      // Nạp Adapter Specs & Labs
+      // Nạp Adapter Specs
       loadAdapterInfo();
-      loadLabs();
     } catch (e) {
       console.warn("Không thể nạp dữ liệu REST API khởi tạo:", e);
     }
